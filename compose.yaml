@@ -1,10 +1,19 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: 'mysql:8.0'
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      - 'MYSQL_DATABASE=biblioteca'
+      - 'MYSQL_USER=library-user'
+      - 'MYSQL_PASSWORD=080808A'
+      - 'MYSQL_ROOT_PASSWORD=40028922'
     ports:
-      - '3306'
+      - '3306:3306'
+    volumes:
+        - 'mysql-data:/var/lib/mysql'
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+
+volumes:
+    mysql-data:
