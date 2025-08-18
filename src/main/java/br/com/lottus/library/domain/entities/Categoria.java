@@ -1,6 +1,6 @@
 package br.com.lottus.library.domain.entities;
 
-import br.com.lottus.library.domain.exceptions.NomeVazioOuNuloException;
+import br.com.lottus.library.domain.exceptions.NomeCategoriaVazioOuNuloException;
 
 public class Categoria {
     private Long id;
@@ -16,7 +16,7 @@ public class Categoria {
 
     private void validarNome(String nome) {
         if (nome == null || nome.isBlank()) {
-            throw new NomeVazioOuNuloException();
+            throw new NomeCategoriaVazioOuNuloException();
         } else {
             this.nome = nome;
         }
