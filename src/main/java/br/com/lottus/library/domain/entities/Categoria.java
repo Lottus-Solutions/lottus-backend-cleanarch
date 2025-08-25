@@ -1,5 +1,6 @@
 package br.com.lottus.library.domain.entities;
 
+import br.com.lottus.library.domain.exceptions.CorCategoriaVazioOuNuloException;
 import br.com.lottus.library.domain.exceptions.NomeCategoriaVazioOuNuloException;
 
 public class Categoria {
@@ -7,50 +8,48 @@ public class Categoria {
     private String nome;
     private String cor;
 
-    public Categoria() {}
-
-    public Categoria(String nome, String cor) {
-        validarNome(nome);
-        validarCor(cor);
+    private Categoria(Long id, String nome, String cor) {
+        this.id = id;
+        this.nome = validarNome(nome);
+        this.cor = validarCor(cor);
     }
 
-    private void validarNome(String nome) {
+    protected Categoria() {}
+
+    public static Categoria criar(String nome, String cor) {
+        String nomeValidado = validarNome(nome);
+        String corValidada = validarCor(cor);
+
+        return new Categoria(null, nomeValidado, corValidada);
+    }
+
+    public static Categoria criarComId(Long id, String nome, String cor) {
+        String nomeValidado = validarNome(nome);
+        String corValidada = validarCor(cor);
+
+        return new Categoria(id, nomeValidado, corValidada);
+    }
+
+    private static String validarNome(String nome) {
         if (nome == null || nome.isBlank()) {
             throw new NomeCategoriaVazioOuNuloException();
-        } else {
-            this.nome = nome;
         }
-    }
-
-    private void validarCor(String cor) {
-        if (cor == null || cor.isBlank()) {
-            this.cor = "#CBCBCB";
-        } else {
-            this.cor = cor;
-        }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCor() {
+    private static String validarCor(String cor) {
+        if (cor == null || cor.isBlank()) {
+            throw new CorCategoriaVazioOuNuloException();
+        }
         return cor;
     }
 
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
+    public void alterarNome(String nome) { this.nome = validarNome(nome); }
+    public void alterarCor(String cor) { this.cor = validarCor(cor); }
+
+    public Long getId() { return id; }
+    public String getNome() { return nome; }
+    public String getCor() { return cor; }
+
+
 }
