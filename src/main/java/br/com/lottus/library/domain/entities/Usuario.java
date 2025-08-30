@@ -1,7 +1,8 @@
 package br.com.lottus.library.domain.entities;
 
+import br.com.lottus.library.application.ports.command.CadastrarUsuarioCommand;
+
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Usuario {
     private Long id;
@@ -12,9 +13,10 @@ public class Usuario {
     private LocalDate dataRegistro;
     private int idAvatar;
 
-    public Usuario() {}
+    protected Usuario() {
+    }
 
-    public Usuario(Long id, String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
+    private Usuario(Long id, String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -23,6 +25,19 @@ public class Usuario {
         this.idAvatar = idAvatar;
     }
 
+    public static Usuario criar(String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
+        return new Usuario(null, nome, email, senha, dataRegistro, idAvatar);
+    }
+
+    public static Usuario criarComId(Long id, String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
+        return new Usuario(id, nome, email, senha, dataRegistro, idAvatar);
+    }
+
+    public static Usuario criar(CadastrarUsuarioCommand command) {
+        return new Usuario(null, command.nome(), command.email(), command.senha(), command.dataRegistro(), command.idAvatar());
+    }
+
+    //Getters and Setters
     public Long getId() {
         return id;
     }
