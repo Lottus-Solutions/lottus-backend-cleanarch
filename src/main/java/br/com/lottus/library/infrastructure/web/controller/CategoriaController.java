@@ -23,7 +23,7 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<Categoria> cadastrar(@Valid @RequestBody CadastrarCategoriaCommand command) {
-        Categoria categoriaCadastrada = cadastrarCategoria.executar(command);
+        Categoria categoriaCadastrada = cadastrarCategoria.cadastrar(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaCadastrada);
     }
 }

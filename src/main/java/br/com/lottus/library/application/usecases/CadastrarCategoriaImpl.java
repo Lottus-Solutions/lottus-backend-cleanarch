@@ -2,10 +2,11 @@ package br.com.lottus.library.application.usecases;
 
 import br.com.lottus.library.application.ports.command.CadastrarCategoriaCommand;
 import br.com.lottus.library.application.exceptions.CategoriaJaExistenteException;
+import br.com.lottus.library.application.ports.in.CadastrarCategoriaUseCase;
 import br.com.lottus.library.application.ports.out.CategoriaRepositoryPort;
 import br.com.lottus.library.domain.entities.Categoria;
 
-public class CadastrarCategoriaImpl {
+public class CadastrarCategoriaImpl implements CadastrarCategoriaUseCase {
 
     private final CategoriaRepositoryPort port;
 
@@ -13,7 +14,8 @@ public class CadastrarCategoriaImpl {
         this.port = port;
     }
 
-    public Categoria executar(CadastrarCategoriaCommand comando) {
+    @Override
+    public Categoria cadastrar(CadastrarCategoriaCommand comando) {
         if (port.existsByNome(comando.nome())) {
             throw new CategoriaJaExistenteException();
         }
