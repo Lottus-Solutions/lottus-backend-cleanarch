@@ -14,8 +14,6 @@ public class Categoria {
         this.cor = validarCor(cor);
     }
 
-    protected Categoria() {}
-
     public static Categoria criar(String nome, String cor) {
         String nomeValidado = validarNome(nome);
         String corValidada = validarCor(cor);
