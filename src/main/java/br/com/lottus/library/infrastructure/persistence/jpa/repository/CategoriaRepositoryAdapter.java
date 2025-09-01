@@ -7,6 +7,7 @@ import br.com.lottus.library.infrastructure.persistence.jpa.mapper.CategoriaEnti
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +40,15 @@ public class CategoriaRepositoryAdapter implements CategoriaRepositoryPort {
 
     @Override
     public List<Categoria> findAll() {
-        return List.of();
+        List<CategoriaEntity> categoriaEntities = repository.findAll();
+        List<Categoria> categoriaDomains = new ArrayList<>();
+
+        for (CategoriaEntity categoria : categoriaEntities) {
+            var categoriaDomain = CategoriaEntityMapper.toDomain(categoria);
+            categoriaDomains.add(categoriaDomain);
+        }
+
+        return categoriaDomains;
     }
 
     @Override

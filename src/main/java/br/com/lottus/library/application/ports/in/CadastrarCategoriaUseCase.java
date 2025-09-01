@@ -5,6 +5,6 @@ import br.com.lottus.library.domain.entities.Categoria;
 
 public interface CadastrarCategoriaUseCase {
 
-    Categoria cadastrar(CadastrarCategoriaCommand command);
+    Categoria executar(CadastrarCategoriaCommand command);
 
 }

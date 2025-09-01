@@ -15,7 +15,7 @@ public class CadastrarCategoriaImpl implements CadastrarCategoriaUseCase {
     }
 
     @Override
-    public Categoria cadastrar(CadastrarCategoriaCommand comando) {
+    public Categoria executar(CadastrarCategoriaCommand comando) {
         if (port.existsByNome(comando.nome())) {
             throw new CategoriaJaExistenteException();
         }
