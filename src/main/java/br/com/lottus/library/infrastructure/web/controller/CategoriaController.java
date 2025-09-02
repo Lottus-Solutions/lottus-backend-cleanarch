@@ -3,6 +3,7 @@ package br.com.lottus.library.infrastructure.web.controller;
 import br.com.lottus.library.application.ports.command.CadastrarCategoriaCommand;
 import br.com.lottus.library.application.usecases.CadastrarCategoriaImpl;
 import br.com.lottus.library.application.usecases.ListarCategoriaImpl;
+import br.com.lottus.library.application.usecases.RemoverCategoriaUseCaseImpl;
 import br.com.lottus.library.domain.entities.Categoria;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,14 @@ public class CategoriaController {
 
     private final CadastrarCategoriaImpl cadastrarCategoria;
     private final ListarCategoriaImpl listarCategoria;
+    private final RemoverCategoriaUseCaseImpl removerCategoria;
 
     public CategoriaController(CadastrarCategoriaImpl cadastrarCategoria,
-                               ListarCategoriaImpl listarCategoria) {
+                               ListarCategoriaImpl listarCategoria,
+                               RemoverCategoriaUseCaseImpl removerCategoria) {
         this.cadastrarCategoria = cadastrarCategoria;
         this.listarCategoria = listarCategoria;
+        this.removerCategoria = removerCategoria;
     }
 
     @PostMapping
@@ -34,5 +38,11 @@ public class CategoriaController {
     public ResponseEntity<List<Categoria>> listar() {
         List<Categoria> categorias = listarCategoria.executar();
         return ResponseEntity.ok().body(categorias);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        removerCategoria.executar(id);
+        return ResponseEntity.noContent().build();
     }
 }

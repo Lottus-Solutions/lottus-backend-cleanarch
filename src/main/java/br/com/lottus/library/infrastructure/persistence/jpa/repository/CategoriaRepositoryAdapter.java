@@ -27,6 +27,11 @@ public class CategoriaRepositoryAdapter implements CategoriaRepositoryPort {
     }
 
     @Override
+    public boolean existsById(Long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public Categoria save(Categoria domain) {
         CategoriaEntity categoriaParaRegistro = CategoriaEntityMapper.toEntity(domain);
         CategoriaEntity categoriaRegistrada = repository.save(categoriaParaRegistro);

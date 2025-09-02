@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface CategoriaRepositoryPort {
     boolean existsByNome(String nome);
+    boolean existsById(Long id);
     Categoria save(Categoria domain);
     Optional<Categoria> findById(Long id);
     List<Categoria> findAll();
