@@ -58,6 +58,6 @@ public class CategoriaRepositoryAdapter implements CategoriaRepositoryPort {
 
     @Override
     public void deleteById(Long id) {
-
+        repository.deleteById(id);
     }
 }
