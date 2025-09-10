@@ -20,7 +20,7 @@ public class UsuarioMapper {
         return Usuario.criarComId(entity.getId(),
                 entity.getNome(),
                 entity.getEmail(),
-                entity.getNome(),
+                entity.getSenha(),
                 entity.getDataCadastro(),
                 entity.getIdAvatar());
     }

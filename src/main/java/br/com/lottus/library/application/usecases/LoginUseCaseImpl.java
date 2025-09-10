@@ -2,6 +2,7 @@ package br.com.lottus.library.application.usecases;
 
 import br.com.lottus.library.application.exceptions.CredenciaisInvalidasExceptions;
 import br.com.lottus.library.application.exceptions.UsuarioNaoEncontradoException;
+import br.com.lottus.library.application.ports.command.LoginCommand;
 import br.com.lottus.library.application.ports.in.LoginUseCase;
 import br.com.lottus.library.application.ports.out.JwtProviderPort;
 import br.com.lottus.library.application.ports.out.PasswordEncoderPort;
@@ -20,13 +21,13 @@ public class LoginUseCaseImpl implements LoginUseCase {
     }
 
     @Override
-    public String execute(String email, String senha) {
-        Usuario usuario = port.findByEmail(email)
+    public String execute(LoginCommand command) {
+        Usuario usuario = port.findByEmail(command.email())
                 .orElseThrow(UsuarioNaoEncontradoException::new);
 
-        if(!encoderPort.matches(senha, usuario.getSenha())) {
+        if(!encoderPort.matches(command.senha(), usuario.getSenha())) {
             throw new CredenciaisInvalidasExceptions();
         }
-        return jwtProvider.generateToken(email);
+        return jwtProvider.generateToken(command.email());
     }
 }
