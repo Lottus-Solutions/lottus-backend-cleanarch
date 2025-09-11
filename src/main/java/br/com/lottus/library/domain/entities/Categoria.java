@@ -3,6 +3,8 @@ package br.com.lottus.library.domain.entities;
 import br.com.lottus.library.domain.exceptions.CorCategoriaVazioOuNuloException;
 import br.com.lottus.library.domain.exceptions.NomeCategoriaVazioOuNuloException;
 
+import java.util.Objects;
+
 public class Categoria {
     private Long id;
     private String nome;
@@ -49,5 +51,17 @@ public class Categoria {
     public String getNome() { return nome; }
     public String getCor() { return cor; }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Categoria categoria = (Categoria) o;
+        return Objects.equals(id, categoria.id) && Objects.equals(nome, categoria.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome);
+    }
 
 }
