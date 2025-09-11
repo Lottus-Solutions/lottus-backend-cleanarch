@@ -37,6 +37,18 @@ public class Usuario {
         return new Usuario(null, command.nome(), command.email(), command.senha(), command.dataRegistro(), command.idAvatar());
     }
 
+    public void atualizarPerfil(String nome, Integer idAvatar) {
+        final int TAMANHO_MINIMO_NOME = 3;
+        if (nome == null || nome.trim().length() < TAMANHO_MINIMO_NOME) {
+            throw new br.com.lottus.library.domain.exceptions.NomeInvalidoException("O nome deve ter pelo menos " + TAMANHO_MINIMO_NOME + " caracteres.");
+        }
+        if (idAvatar == null) {
+            throw new br.com.lottus.library.domain.exceptions.IdAvatarInvalidoException("O id do avatar é obrigatório.");
+        }
+        this.nome = nome;
+        this.idAvatar = idAvatar;
+    }
+
     //Getters and Setters
     public Long getId() {
         return id;

@@ -38,7 +38,8 @@ public class UsuarioRepositoryAdaptar implements UsuarioRepositoryPort {
 
     @Override
     public Optional<Usuario> findById(Long id) {
-        return Optional.empty();
+        return jpaUsuarioRepository.findById(id)
+                .map(usuarioMapper::toDomain);
     }
 
     @Override

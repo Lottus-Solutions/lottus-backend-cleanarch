@@ -5,4 +5,8 @@ public class UsuarioNaoEncontradoException extends RuntimeException {
     public UsuarioNaoEncontradoException() {
         super(MENSAGEM_PADRAO);
     }
+
+    public UsuarioNaoEncontradoException(String message) {
+        super(message);
+    }
 }
