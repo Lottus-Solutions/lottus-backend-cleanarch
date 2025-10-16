@@ -2,9 +2,7 @@ package br.com.lottus.library.application.usecases;
 
 import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
 import br.com.lottus.library.application.exceptions.LivroJaCadastradoException;
-import br.com.lottus.library.application.ports.command.CadastrarCategoriaCommand;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
-import br.com.lottus.library.application.ports.in.CadastrarCategoriaUseCase;
 import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
 import br.com.lottus.library.application.ports.out.CategoriaRepositoryPort;
 import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
@@ -24,7 +22,8 @@ public class CadastrarLivroImpl implements CadastrarLivroUseCase {
 
     @Override
     public Livro executar(CadastrarLivroCommand command) {
-        if (livroPort.existsByNomeIgnoreCase(command.nome())) {
+        Boolean existe = livroPort.existsByNomeIgnoreCase(command.nome());
+        if (Boolean.TRUE.equals(existe)) {
             throw new LivroJaCadastradoException();
         }
 

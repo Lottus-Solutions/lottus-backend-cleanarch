@@ -1,12 +1,17 @@
 package br.com.lottus.library.infrastructure.persistence.jpa.mapper;
 
 import br.com.lottus.library.domain.entities.Livro;
+import br.com.lottus.library.infrastructure.persistence.jpa.entity.CategoriaEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
+import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class LivroEntityMapper  {
-    public static LivroEntity toEntity(Livro domain) {
+
+    public static LivroEntity toEntity(Livro domain, CategoriaEntity categoriaEntity) {
         if (Objects.isNull(domain))
             return null;
 
@@ -17,7 +22,7 @@ public class LivroEntityMapper  {
         entity.setQuantidadeDisponivel(domain.getQuantidadeDisponivel());
         entity.setStatus(domain.getStatus());
         entity.setDescricao(domain.getDescricao());
-        entity.setCategoria(domain.getCategoria());
+        entity.setCategoria(categoriaEntity);
 
         return entity;
     }
@@ -30,7 +35,7 @@ public class LivroEntityMapper  {
                 entity.getId(),
                 entity.getNome(),
                 entity.getAutor(),
-                entity.getCategoria(),
+                CategoriaEntityMapper.toDomain(entity.getCategoria()),
                 entity.getQuantidade(),
                 entity.getQuantidadeDisponivel(),
                 entity.getStatus(),

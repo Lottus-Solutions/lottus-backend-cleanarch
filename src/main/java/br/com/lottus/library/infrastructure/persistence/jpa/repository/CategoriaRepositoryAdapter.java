@@ -40,7 +40,8 @@ public class CategoriaRepositoryAdapter implements CategoriaRepositoryPort {
 
     @Override
     public Optional<Categoria> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id)
+                .map(CategoriaEntityMapper::toDomain);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package br.com.lottus.library.infrastructure.persistence.jpa.entity;
 
-import br.com.lottus.library.domain.entities.Categoria;
 import br.com.lottus.library.domain.entities.StatusLivro;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -40,7 +39,7 @@ public class LivroEntity {
 
     @ManyToOne
     @JoinColumn(name = "fk_categoria", nullable = false)
-    private Categoria categoria;
+    private CategoriaEntity categoria;
 
     public Long getId() {
         return id;
@@ -98,11 +97,11 @@ public class LivroEntity {
         this.descricao = descricao;
     }
 
-    public Categoria getCategoria() {
+    public CategoriaEntity getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(CategoriaEntity categoria) {
         this.categoria = categoria;
     }
 }
