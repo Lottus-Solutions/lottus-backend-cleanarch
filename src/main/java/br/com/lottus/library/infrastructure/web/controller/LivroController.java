@@ -1,6 +1,7 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
+import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
 import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
 import br.com.lottus.library.application.usecases.ListarLivrosUseCaseImpl;
 import br.com.lottus.library.domain.entities.Livro;
@@ -19,10 +20,12 @@ public class LivroController {
 
     private final CadastrarLivroImpl cadastrarLivro;
     private final ListarLivrosUseCaseImpl listarLivro;
+    private final RemoverLivroUseCase removerLivro;
 
-    public LivroController(CadastrarLivroImpl cadastrarLivro, ListarLivrosUseCaseImpl listarLivro) {
+    public LivroController(CadastrarLivroImpl cadastrarLivro, ListarLivrosUseCaseImpl listarLivro, RemoverLivroUseCase removerLivro) {
         this.cadastrarLivro = cadastrarLivro;
         this.listarLivro = listarLivro;
+        this.removerLivro = removerLivro;
     }
 
     @PostMapping
@@ -32,7 +35,13 @@ public class LivroController {
     }
 
     @GetMapping
-    public List<Livro> listar() {
-        return listarLivro.executar();
+    public ResponseEntity<List<Livro>> listar() {
+        return ResponseEntity.ok(listarLivro.executar());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> remover(@PathVariable Long id) {
+        removerLivro.executar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
