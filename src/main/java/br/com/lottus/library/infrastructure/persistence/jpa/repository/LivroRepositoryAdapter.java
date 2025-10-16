@@ -1,7 +1,10 @@
 package br.com.lottus.library.infrastructure.persistence.jpa.repository;
 
+import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
 import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Livro;
+import br.com.lottus.library.infrastructure.persistence.jpa.entity.CategoriaEntity;
+import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.mapper.LivroEntityMapper;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.LivroRepository;
@@ -23,11 +26,19 @@ public class LivroRepositoryAdapter implements LivroRepositoryPort {
 
     @Override
     public Livro save(Livro domain) {
-        var categoriaEntity =categoriaRepository.getReferenceById(domain.getCategoria().getId());
-        var livroParaRegistro = LivroEntityMapper.toEntity(domain, categoriaEntity);
+        LivroEntity entity;
 
-        var livroRegistrado = repository.save(livroParaRegistro);
-        return LivroEntityMapper.toDomain(livroRegistrado);
+        if (domain.getId() != null) {
+            entity = repository.findById(domain.getId())
+                    .orElse(new LivroEntity());
+            LivroEntityMapper.atualizarEntity(entity, domain, entity.getCategoria());
+        } else {
+            CategoriaEntity categoriaEntity = categoriaRepository.findById(domain.getCategoria().getId())
+                    .orElseThrow(CategoriaNaoEncontradaException::new);
+            entity = LivroEntityMapper.toEntity(domain, categoriaEntity);
+        }
+
+        return LivroEntityMapper.toDomain(repository.save(entity));
     }
 
     @Override

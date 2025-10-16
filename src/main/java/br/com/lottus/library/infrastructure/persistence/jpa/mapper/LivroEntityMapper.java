@@ -42,4 +42,14 @@ public class LivroEntityMapper  {
                 entity.getDescricao()
         );
     }
+
+    public static void atualizarEntity(LivroEntity entity, Livro domain, CategoriaEntity categoriaEntity) {
+        entity.setNome(domain.getNome());
+        entity.setAutor(domain.getAutor());
+        entity.setQuantidade(domain.getQuantidade());
+        entity.setQuantidadeDisponivel(domain.getQuantidadeDisponivel());
+        entity.setStatus(domain.getStatus());
+        entity.setDescricao(domain.getDescricao());
+        entity.setCategoria(categoriaEntity);
+    }
 }
