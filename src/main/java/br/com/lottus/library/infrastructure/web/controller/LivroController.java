@@ -2,15 +2,15 @@ package br.com.lottus.library.infrastructure.web.controller;
 
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
+import br.com.lottus.library.application.usecases.ListarLivrosUseCaseImpl;
 import br.com.lottus.library.domain.entities.Livro;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Livros", description = "Endpoint para o gerenciamento de livros")
 @RestController
@@ -18,14 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class LivroController {
 
     private final CadastrarLivroImpl cadastrarLivro;
+    private final ListarLivrosUseCaseImpl listarLivro;
 
-    public LivroController(CadastrarLivroImpl cadastrarLivro) {
+    public LivroController(CadastrarLivroImpl cadastrarLivro, ListarLivrosUseCaseImpl listarLivro) {
         this.cadastrarLivro = cadastrarLivro;
+        this.listarLivro = listarLivro;
     }
 
     @PostMapping
     public ResponseEntity<Livro> cadastrar(@Valid @RequestBody CadastrarLivroCommand command) {
         Livro livroCadastrado = cadastrarLivro.executar(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(livroCadastrado);
+    }
+
+    @GetMapping
+    public List<Livro> listar() {
+        return listarLivro.executar();
     }
 }

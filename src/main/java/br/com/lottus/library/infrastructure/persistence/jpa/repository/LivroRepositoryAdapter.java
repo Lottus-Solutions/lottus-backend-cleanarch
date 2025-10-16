@@ -2,7 +2,6 @@ package br.com.lottus.library.infrastructure.persistence.jpa.repository;
 
 import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Livro;
-import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.mapper.LivroEntityMapper;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.LivroRepository;
@@ -33,26 +32,30 @@ public class LivroRepositoryAdapter implements LivroRepositoryPort {
 
     @Override
     public List<Livro> findAll() {
-        return List.of();
+        return repository.findAll()
+                .stream()
+                .map(LivroEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
     public Optional<Livro> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id)
+                .map(LivroEntityMapper::toDomain);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        repository.deleteById(id);
     }
 
     @Override
     public Integer countByCategoriaId(Long categoriaId) {
-        return 0;
+        return repository.countByCategoriaId(categoriaId);
     }
 
     @Override
     public Boolean existsByNomeIgnoreCase(String nome) {
-        return null;
+        return repository.existsByNomeIgnoreCase(nome);
     }
 }
