@@ -1,7 +1,11 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
+import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
+import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.ports.in.AtualizarLivroUseCase;
+import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
+import br.com.lottus.library.application.ports.in.ListarLivrosUseCase;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
 import br.com.lottus.library.application.usecases.AtualizarLivroUseCaseImpl;
 import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
@@ -10,6 +14,7 @@ import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +24,15 @@ import java.util.List;
 @Tag(name = "Livros", description = "Endpoint para o gerenciamento de livros")
 @RestController
 @RequestMapping("/livros")
+@Slf4j
 public class LivroController {
 
-    private final CadastrarLivroImpl cadastrarLivro;
-    private final ListarLivrosUseCaseImpl listarLivro;
+    private final CadastrarLivroUseCase cadastrarLivro;
+    private final ListarLivrosUseCase listarLivro;
     private final RemoverLivroUseCase removerLivro;
     private final AtualizarLivroUseCase atualizarLivro;
 
-    public LivroController(CadastrarLivroImpl cadastrarLivro, ListarLivrosUseCaseImpl listarLivro, RemoverLivroUseCase removerLivro, AtualizarLivroUseCaseImpl atualizarLivro) {
+    public LivroController(CadastrarLivroUseCase cadastrarLivro, ListarLivrosUseCase listarLivro, RemoverLivroUseCase removerLivro, AtualizarLivroUseCase atualizarLivro) {
         this.cadastrarLivro = cadastrarLivro;
         this.listarLivro = listarLivro;
         this.removerLivro = removerLivro;
@@ -35,24 +41,37 @@ public class LivroController {
 
     @PostMapping
     public ResponseEntity<Livro> cadastrar(@Valid @RequestBody CadastrarLivroCommand command) {
+        log.info("Requisição recebida para cadastrar livro: {}", command.nome());
         Livro livroCadastrado = cadastrarLivro.executar(command);
+
+        log.info("Livro cadastrado com sucesso: ID = {}, Nome = {}", livroCadastrado.getId(), livroCadastrado.getNome());
         return ResponseEntity.status(HttpStatus.CREATED).body(livroCadastrado);
     }
 
     @GetMapping
     public ResponseEntity<List<Livro>> listar() {
-        return ResponseEntity.ok(listarLivro.executar());
+        log.info("Requisição recebida para listar todos os livros");
+        List<Livro> livros = listarLivro.executar();
+
+        log.info("{} livro(s) retornado(s) ao cliente", livros.size());
+        return ResponseEntity.ok(livros);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
+        log.info("Requisição recebida para remover livro (ID: {})", id);
         removerLivro.executar(id);
+
+        log.info("Livro (ID: {}) removido com sucesso", id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Livro> atualizar(@PathVariable Long id, @RequestBody AtualizarLivroCommand command) {
-        Livro livro = atualizarLivro.executar(id, command);
-        return ResponseEntity.ok(livro);
+        log.info("Requisição recebida para atualizar livro (ID: {})", id);
+        Livro livroAtualizado = atualizarLivro.executar(id, command);
+
+        log.info("Livro (ID: {}) atualizado com sucesso e retornado ao cliente", id);
+        return ResponseEntity.ok(livroAtualizado);
     }
 }

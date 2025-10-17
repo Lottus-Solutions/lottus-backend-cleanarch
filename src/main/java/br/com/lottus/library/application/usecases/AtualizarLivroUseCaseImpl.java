@@ -8,7 +8,9 @@ import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Categoria;
 import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AtualizarLivroUseCaseImpl implements AtualizarLivroUseCase {
 
     private final LivroRepositoryPort livroPort;
@@ -21,11 +23,21 @@ public class AtualizarLivroUseCaseImpl implements AtualizarLivroUseCase {
 
     @Override
     public Livro executar(Long id, AtualizarLivroCommand command) {
+        log.info("Iniciando atualização do livro com ID: {}", id);
+
         Livro livroExistente = livroPort.findById(id)
-                .orElseThrow(LivroNaoEncontradoException::new);
+                .orElseThrow(() -> {
+                    log.warn("Livro com ID {} não encontrado", id);
+                    return new LivroNaoEncontradoException();
+                });
 
         Categoria categoria = categoriaPort.findById(command.categoriaId())
-                        .orElseThrow(CategoriaNaoEncontradaException::new);
+                        .orElseThrow(() -> {
+                            log.warn("Categoria com ID {} não encontrada ao atualizar livro ", command.categoriaId());
+                            return new CategoriaNaoEncontradaException();
+                        });
+
+        log.debug("Atualizando informações do livro '{}'", livroExistente.getNome());
 
         livroExistente.alterarNome(command.nome());
         livroExistente.alterarAutor(command.autor());
@@ -35,6 +47,10 @@ public class AtualizarLivroUseCaseImpl implements AtualizarLivroUseCase {
         livroExistente.alterarDescricao(command.descricao());
         livroExistente.alterarCategoria(categoria);
 
-        return livroPort.save(livroExistente);
+        Livro atualizado = livroPort.save(livroExistente);
+
+        log.info("Livro atualizado com sucesso: ID = {}, Nome = {}", atualizado.getId(), atualizado.getNome());
+
+        return atualizado;
     }
 }
