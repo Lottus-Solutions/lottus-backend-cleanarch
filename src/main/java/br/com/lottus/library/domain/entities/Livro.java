@@ -68,6 +68,25 @@ public class Livro {
         return descricao;
     }
 
+    public void emprestar() {
+        if (this.quantidadeDisponivel == 0) {
+            throw new br.com.lottus.library.application.exceptions.LivroIndisponivelException();
+        }
+        this.quantidadeDisponivel--;
+        if (this.quantidadeDisponivel == 0) {
+            this.status = StatusLivro.RESERVADO;
+        }
+    }
+
+    public void devolver() {
+        if (this.quantidadeDisponivel < this.quantidade) {
+            this.quantidadeDisponivel++;
+            if (this.status == StatusLivro.RESERVADO) {
+                this.status = StatusLivro.DISPONIVEL;
+            }
+        }
+    }
+
     public void alterarNome(String nome) { this.nome = validarNome(nome); }
     public void alterarAutor(String autor) { this.autor = validarAutor(autor); }
     public void alterarCategoria(Categoria categoria) { this.categoria = Objects.requireNonNull(categoria); }
