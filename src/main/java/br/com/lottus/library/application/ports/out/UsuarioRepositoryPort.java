@@ -6,5 +6,8 @@ import java.util.Optional;
 
 public interface UsuarioRepositoryPort {
     Usuario save(Usuario usuario);
-    Optional<Usuario> findByIdAndSenha(String email, String senha);
+
+    Optional<Usuario> findByEmail(String email);
+    Optional<Usuario> findById(Long id);
+    boolean existsByEmail(String email);
 }
