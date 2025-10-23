@@ -53,7 +53,7 @@ public class AlunoController {
 
     @Operation(summary = "Editar aluno pelo numero da Matricula", description = "Retorna uma mensagem informado sobre o resultado da operação")
     @PutMapping("/editar/{matricula}")
-    public ResponseEntity<String> editarAluno(@PathVariable Long matricula, @RequestBody EditarAlunoCommand command) {
+    public ResponseEntity<String> editarAluno(@PathVariable Long matricula, @Valid @RequestBody EditarAlunoCommand command) {
         editarAlunoUseCase.executar(matricula, command);
         return ResponseEntity.ok("Aluno editado com sucesso");
     }

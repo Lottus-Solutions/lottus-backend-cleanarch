@@ -7,7 +7,9 @@ import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.Tu
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,8 +24,13 @@ public class TurmaRepositoryAdapter implements TurmaRepositoryPort {
     }
 
     @Override
+    public Optional<Turma> findById(Long id) {
+        return repository.findById(id).stream().map(TurmaEntityMapper::toDomain).findFirst();
+    }
+
+    @Override
     public List<Turma> findAll() {
-        return repository.findAll().stream().map(TurmaEntityMapper::toDomain).collect(java.util.stream.Collectors.toList());
+        return repository.findAll().stream().map(TurmaEntityMapper::toDomain).collect(Collectors.toList());
     }
 
     @Override

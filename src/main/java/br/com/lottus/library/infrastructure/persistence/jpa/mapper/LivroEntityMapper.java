@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Component
 public class LivroEntityMapper  {
 
     public static LivroEntity toEntity(Livro domain, CategoriaEntity categoriaEntity) {

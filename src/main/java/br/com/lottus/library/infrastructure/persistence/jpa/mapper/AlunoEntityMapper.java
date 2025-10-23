@@ -3,6 +3,7 @@ package br.com.lottus.library.infrastructure.persistence.jpa.mapper;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.AlunoEntity;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 

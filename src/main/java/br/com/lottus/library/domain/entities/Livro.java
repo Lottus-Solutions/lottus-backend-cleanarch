@@ -1,6 +1,7 @@
 package br.com.lottus.library.domain.entities;
 
 import br.com.lottus.library.domain.exceptions.*;
+import br.com.lottus.library.domain.entities.Categoria;
 
 import java.util.Objects;
 
