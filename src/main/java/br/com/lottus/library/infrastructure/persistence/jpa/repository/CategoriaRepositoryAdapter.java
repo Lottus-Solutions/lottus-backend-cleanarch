@@ -61,4 +61,10 @@ public class CategoriaRepositoryAdapter implements CategoriaRepositoryPort {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Optional<Categoria> findByNome(String nome) {
+        return repository.findByNome(nome)
+                .map(CategoriaEntityMapper::toDomain);
+    }
 }

@@ -2,6 +2,7 @@ package br.com.lottus.library.infrastructure.configuration;
 
 import br.com.lottus.library.application.usecases.CadastrarCategoriaImpl;
 import br.com.lottus.library.application.usecases.ListarCategoriaImpl;
+import br.com.lottus.library.application.usecases.ObterOuCriarCategoriaUseCaseImpl;
 import br.com.lottus.library.application.usecases.RemoverCategoriaUseCaseImpl;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.CategoriaRepositoryAdapter;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,11 @@ public class CategoriaBeanConfig {
     @Bean
     public RemoverCategoriaUseCaseImpl removerCategoriaUseCase(CategoriaRepositoryAdapter port) {
         return new RemoverCategoriaUseCaseImpl(port);
+    }
+
+    @Bean
+    public ObterOuCriarCategoriaUseCaseImpl obterOuCriarCategoriaUseCase(CategoriaRepositoryAdapter port) {
+        return new ObterOuCriarCategoriaUseCaseImpl(port);
     }
 
 }

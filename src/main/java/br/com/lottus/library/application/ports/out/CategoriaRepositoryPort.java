@@ -12,4 +12,5 @@ public interface CategoriaRepositoryPort {
     Optional<Categoria> findById(Long id);
     List<Categoria> findAll();
     void deleteById(Long id);
+    Optional<Categoria> findByNome(String nome);
 }
