@@ -1,10 +1,15 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
+import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
+import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.ports.in.AtualizarLivroUseCase;
 import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
 import br.com.lottus.library.application.ports.in.BuscarLivrosUseCase;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
+import br.com.lottus.library.application.usecases.AtualizarLivroUseCaseImpl;
+import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
+import br.com.lottus.library.application.usecases.ListarLivrosUseCaseImpl;
 import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.domain.entities.StatusLivro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
