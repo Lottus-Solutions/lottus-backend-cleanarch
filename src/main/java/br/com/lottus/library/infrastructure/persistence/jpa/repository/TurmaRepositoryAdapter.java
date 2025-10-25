@@ -42,4 +42,12 @@ public class TurmaRepositoryAdapter implements TurmaRepositoryPort {
     public boolean existsByNomeIgnoreCase(String nome) {
         return repository.existsByNomeIgnoreCase(nome);
     }
+
+    @Override
+    public Optional<Turma> findByNome(String nome) {
+        return repository.findByNome(nome)
+                .stream()
+                .map(TurmaEntityMapper::toDomain)
+                .findFirst();
+    }
 }

@@ -11,4 +11,5 @@ public interface TurmaRepositoryPort {
     boolean existsByNomeIgnoreCase(String nome);
     List<Turma> findAll();
     void deleteById(Long id);
+    Optional<Turma> findByNome(String nome);
 }

@@ -1,11 +1,9 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
 import br.com.lottus.library.application.ports.command.GerenciarTurmaCommand;
-import br.com.lottus.library.application.ports.in.AdicionarTurmaUseCase;
-import br.com.lottus.library.application.ports.in.EditarTurmaUseCase;
-import br.com.lottus.library.application.ports.in.ListarTurmasUseCase;
-import br.com.lottus.library.application.ports.in.RemoverTurmaUseCase;
+import br.com.lottus.library.application.ports.in.*;
 import br.com.lottus.library.domain.entities.Turma;
+import br.com.lottus.library.infrastructure.web.command.ObterOuCadastrarTurmaRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,8 @@ public class TurmaController {
     private final ListarTurmasUseCase listarTurmasUseCase;
     private final RemoverTurmaUseCase removerTurmaUseCase;
     private final EditarTurmaUseCase editarTurmaUseCase;
+    private final ObterOuCadastrarTurmaUseCase obterOuCadastrarTurmaUseCase;
+
 
     @PostMapping
     public ResponseEntity<Turma> adicionar(@Valid @RequestBody GerenciarTurmaCommand command) {
@@ -47,6 +47,12 @@ public class TurmaController {
     @PutMapping("/{id}")
     public ResponseEntity<Turma> editar(@PathVariable Long id, @Valid @RequestBody GerenciarTurmaCommand command) {
         Turma turma = editarTurmaUseCase.executar(id, command);
+        return ResponseEntity.ok(turma);
+    }
+
+    @PostMapping("/obter-ou-criar")
+    public ResponseEntity<Turma> obterOuCriar(@RequestBody ObterOuCadastrarTurmaRequest request) {
+        Turma turma = obterOuCadastrarTurmaUseCase.executar(request.toCommand());
         return ResponseEntity.ok(turma);
     }
 }

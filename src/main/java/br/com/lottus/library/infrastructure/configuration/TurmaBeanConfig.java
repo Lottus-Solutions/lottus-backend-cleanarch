@@ -27,4 +27,9 @@ public class TurmaBeanConfig {
     public EditarTurmaUseCaseImpl editarTurmaUseCase(TurmaRepositoryPort turmaRepositoryPort) {
         return new EditarTurmaUseCaseImpl(turmaRepositoryPort);
     }
+
+    @Bean
+    public ObterOuCadastrarTurmaUseCaseImpl obterOuCadastrarTurmaUseCase(TurmaRepositoryPort turmaRepositoryPort) {
+        return new ObterOuCadastrarTurmaUseCaseImpl(turmaRepositoryPort);
+    }
 }
