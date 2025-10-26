@@ -14,7 +14,7 @@ public class ObterOuCadastrarTurmaUseCaseImpl implements ObterOuCadastrarTurmaUs
     }
 
     @Override
-    public Turma executar(GerenciarTurmaCommand command) {
+    public synchronized Turma executar(GerenciarTurmaCommand command) {
        return turmaRepository.findByNome(command.nome())
                .orElseGet(() -> {
                    Turma turmaNova = Turma.criar(command.nome());

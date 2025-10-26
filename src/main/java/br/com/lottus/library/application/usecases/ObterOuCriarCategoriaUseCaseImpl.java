@@ -14,7 +14,7 @@ public class ObterOuCriarCategoriaUseCaseImpl implements ObterOuCriarCategoriaUs
     }
 
     @Override
-    public Categoria executar(CadastrarCategoriaCommand command) {
+    public synchronized Categoria executar(CadastrarCategoriaCommand command) {
         return categoriaRepository.findByNome(command.nome())
                 .orElseGet(() -> {
                     Categoria novaCategoria = Categoria.criar(command.nome(), "#0292B7");
