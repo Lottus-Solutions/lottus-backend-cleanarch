@@ -45,6 +45,7 @@ public class FazerEmprestimoUseCaseImpl implements FazerEmprestimoUseCase {
         Emprestimo emprestimo = Emprestimo.criar(aluno, livro, command.dataEmprestimo(), dataDevolucao);
 
         livroRepositoryPort.save(livro);
+        alunoRepositoryPort.save(aluno);
         return emprestimoRepositoryPort.save(emprestimo);
     }
 }

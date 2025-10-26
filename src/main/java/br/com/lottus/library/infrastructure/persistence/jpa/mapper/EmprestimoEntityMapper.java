@@ -2,7 +2,9 @@ package br.com.lottus.library.infrastructure.persistence.jpa.mapper;
 
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Emprestimo;
+import br.com.lottus.library.infrastructure.persistence.jpa.entity.AlunoEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.EmprestimoEntity;
+import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
 
 import java.util.Objects;
 
@@ -15,13 +17,23 @@ public class EmprestimoEntityMapper {
 
         var entity = new EmprestimoEntity();
         entity.setId(domain.getId());
-        entity.setAluno(AlunoEntityMapper.toEntity(domain.getAluno()));
-        entity.setLivro(LivroEntityMapper.toEntity(domain.getLivro(), domain.getLivro().getCategoria() != null ? CategoriaEntityMapper.toEntity(domain.getLivro().getCategoria()) : null));
         entity.setDataEmprestimo(domain.getDataEmprestimo());
         entity.setDataDevolucaoPrevista(domain.getDataDevolucaoPrevista());
         entity.setDiasAtrasados(domain.getDiasAtrasados());
         entity.setQtdRenovado(domain.getQtdRenovado());
         entity.setStatusEmprestimo(domain.getStatusEmprestimo());
+
+        return entity;
+    }
+
+    public static EmprestimoEntity toEntity(Emprestimo domain, AlunoEntity alunoEntity, LivroEntity livroEntity) {
+        if (Objects.isNull(domain)) {
+            return null;
+        }
+
+        var entity = toEntity(domain);
+        entity.setAluno(alunoEntity);
+        entity.setLivro(livroEntity);
 
         return entity;
     }

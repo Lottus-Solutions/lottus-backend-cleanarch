@@ -1,113 +1,76 @@
+
 package br.com.lottus.library.infrastructure.web.controller;
 
-import br.com.lottus.library.application.exceptions.CredenciaisInvalidasExceptions;
-import br.com.lottus.library.application.exceptions.UsuarioJaCadastradoComEmailException;
-import br.com.lottus.library.domain.exceptions.IdAvatarInvalidoException;
+import br.com.lottus.library.application.exceptions.*;
 import br.com.lottus.library.domain.exceptions.EmailInvalidoException;
+import br.com.lottus.library.domain.exceptions.IdAvatarInvalidoException;
 import br.com.lottus.library.domain.exceptions.NomeInvalidoException;
 import br.com.lottus.library.domain.exceptions.SenhaInvalidaException;
-import br.com.lottus.library.application.exceptions.CategoriaJaExistenteException;
-import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
-import br.com.lottus.library.application.exceptions.LivroJaCadastradoException;
-import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
+import br.com.lottus.library.infrastructure.web.dto.ErrorResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Map;
+import java.time.Instant;
 
 @Slf4j
 @RestControllerAdvice
 public class ControllerHandler {
-    @ExceptionHandler(UsuarioJaCadastradoComEmailException.class)
-    public ResponseEntity<Map<String, String>> emailJaCadastrado(UsuarioJaCadastradoComEmailException ex) {
-        Map<String, String> error = Map.of(
-                "Erro: ", "Erro de duplicidade: %s".formatted(ex.getMessage()));
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    @ExceptionHandler(UsuarioJaCadastradoComEmailException.class)
+    public ResponseEntity<ErrorResponse> handleUsuarioJaCadastrado(UsuarioJaCadastradoComEmailException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.CONFLICT, "Usuário já cadastrado", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(CategoriaJaExistenteException.class)
-    public ResponseEntity<Map<String, String>> handleCategoriaJaExistente(CategoriaJaExistenteException exception){
-        log.warn("Tentativa de cadastrar categoria já existente: {}", exception.getMessage());
-
-        Map<String, String> error =Map.of(
-                "erro", "Categoria já existente",
-                "mensagem", exception.getMessage() != null ? exception.getMessage() : "A categoria informada já existe no sistema"
-        );
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    public ResponseEntity<ErrorResponse> handleCategoriaJaExistente(CategoriaJaExistenteException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.CONFLICT, "Categoria já existente", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(CredenciaisInvalidasExceptions.class)
-    public ResponseEntity<Map<String, String>> credenciaisInvalidas(CredenciaisInvalidasExceptions ex) {
-        Map<String, String> error = Map.of(
-                "Error: ", "Erro de credenciais: %s".formatted(ex.getMessage()));
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    public ResponseEntity<ErrorResponse> handleCredenciaisInvalidas(CredenciaisInvalidasExceptions ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Credenciais inválidas", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(CategoriaNaoEncontradaException.class)
-    public ResponseEntity<Map<String, String>> handleCategoriaNaoEncontrada(CategoriaNaoEncontradaException exception) {
-        log.warn("Categoria não encontrada: {}", exception.getMessage());
-
-        Map<String, String> error = Map.of(
-                "erro", "Categoria não encontrada",
-                "mensagem", exception.getMessage() != null ? exception.getMessage() : "A categoria informada não foi encontrada no sistema"
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    public ResponseEntity<ErrorResponse> handleCategoriaNaoEncontrada(CategoriaNaoEncontradaException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "Categoria não encontrada", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(LivroJaCadastradoException.class)
-    public ResponseEntity<Map<String, String>> handleLivroJaCadastrado(LivroJaCadastradoException exception){
-        log.warn("Tentativa de cadastrar livro já existente: {}", exception.getMessage());
-
-        Map<String, String> error =Map.of(
-                "erro", "Livro já cadastrado",
-                "mensagem", exception.getMessage() != null ? exception.getMessage() : "O livro informado já está cadastrado no sistema"
-        );
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    public ResponseEntity<ErrorResponse> handleLivroJaCadastrado(LivroJaCadastradoException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.CONFLICT, "Livro já cadastrado", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler(LivroNaoEncontradoException.class)
-    public ResponseEntity<Map<String, String>> handleLivroNaoEncontrado(LivroNaoEncontradoException exception) {
-        log.warn("Livro não encontrado: {}", exception.getMessage());
-
-        Map<String, String> errorResponse = Map.of(
-                "erro", "Livro não encontrado",
-                "mensagem", exception.getMessage() != null ? exception.getMessage() : "O livro solicitado não foi encontrado no sistema"
-        );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleGenericException(Exception exception) {
-        log.error("Erro inesperado: {}", exception.getMessage(), exception);
-
-        Map<String, String> error = Map.of(
-                "erro", "Erro interno do servidor",
-                "mensagem", exception.getMessage() != null ? exception.getMessage() : "Ocorreu um erro inesperado"
-        );
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    public ResponseEntity<ErrorResponse> handleLivroNaoEncontrado(LivroNaoEncontradoException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, "Livro não encontrado", ex.getMessage(), request.getRequestURI());
     }
 
     @ExceptionHandler({NomeInvalidoException.class, EmailInvalidoException.class, SenhaInvalidaException.class, IdAvatarInvalidoException.class})
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(RuntimeException ex) {
-        Map<String, String> error = Map.of(
-                "Erro de validação: ", ex.getMessage() != null ? ex.getMessage() : "Ocorreu um erro de validação",
-                "erro", "Erro interno do servidor",
-                "mensagem", ex.getMessage() != null ? ex.getMessage() : "Ocorreu um erro inesperado"
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(RuntimeException ex, HttpServletRequest request) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Erro de validação", ex.getMessage(), request.getRequestURI());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {
+        log.error("Erro inesperado: {}", ex.getMessage(), ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno do servidor", "Ocorreu um erro inesperado.", request.getRequestURI());
+    }
 
+    private ResponseEntity<ErrorResponse> buildErrorResponse(HttpStatus status, String error, String message, String path) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(Instant.now())
+                .status(status.value())
+                .error(error)
+                .message(message)
+                .path(path)
+                .build();
+        log.info("Erro tratado: status={}, erro='{}', mensagem='{}', path='{}'", status.value(), error, message, path);
+        return new ResponseEntity<>(errorResponse, status);
+    }
 }
+

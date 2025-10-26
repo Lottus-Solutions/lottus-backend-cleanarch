@@ -6,7 +6,9 @@ import br.com.lottus.library.domain.entities.StatusEmprestimo;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.AlunoEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.EmprestimoEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.mapper.EmprestimoEntityMapper;
+import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.AlunoRepository;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.EmprestimoRepository;
+import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.LivroRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +23,14 @@ import java.util.stream.Collectors;
 public class EmprestimoRepositoryAdapter implements EmprestimoRepositoryPort {
 
     private final EmprestimoRepository repository;
+    private final LivroRepository livroRepository;
+    private final AlunoRepository alunoRepository;
 
     @Override
     public Emprestimo save(Emprestimo emprestimo) {
-        var entity = EmprestimoEntityMapper.toEntity(emprestimo);
+        var alunoEntity = alunoRepository.findById(emprestimo.getAluno().getMatricula()).orElseThrow();
+        var livroEntity = livroRepository.findById(emprestimo.getLivro().getId()).orElseThrow();
+        var entity = EmprestimoEntityMapper.toEntity(emprestimo, alunoEntity, livroEntity);
         return EmprestimoEntityMapper.toDomain(repository.save(entity));
     }
 
