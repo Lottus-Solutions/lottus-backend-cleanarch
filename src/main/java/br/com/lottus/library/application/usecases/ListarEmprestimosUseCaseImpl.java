@@ -28,7 +28,7 @@ public class ListarEmprestimosUseCaseImpl implements ListarEmprestimosUseCase {
         return emprestimos.map(emprestimo -> new EmprestimoResponseDTO(
                 emprestimo.getId(),
                 emprestimo.getAluno().getNome(),
-                emprestimo.getAluno().getTurma().getNome(),
+                emprestimo.getAluno().getTurma().getSerie(),
                 emprestimo.getLivro().getNome(),
                 emprestimo.getDataDevolucaoPrevista(),
                 emprestimo.getDiasAtrasadosCalculado()

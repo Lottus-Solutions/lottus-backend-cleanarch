@@ -1,20 +1,18 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
-import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
-import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.ports.in.AtualizarLivroUseCase;
 import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
-import br.com.lottus.library.application.ports.in.ListarLivrosUseCase;
+import br.com.lottus.library.application.ports.in.BuscarLivrosUseCase;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
-import br.com.lottus.library.application.usecases.AtualizarLivroUseCaseImpl;
-import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
-import br.com.lottus.library.application.usecases.ListarLivrosUseCaseImpl;
 import br.com.lottus.library.domain.entities.Livro;
+import br.com.lottus.library.domain.entities.StatusLivro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
+import br.com.lottus.library.infrastructure.web.dto.LivroResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +26,13 @@ import java.util.List;
 public class LivroController {
 
     private final CadastrarLivroUseCase cadastrarLivro;
-    private final ListarLivrosUseCase listarLivro;
+    private final BuscarLivrosUseCase buscarLivro;
     private final RemoverLivroUseCase removerLivro;
     private final AtualizarLivroUseCase atualizarLivro;
 
-    public LivroController(CadastrarLivroUseCase cadastrarLivro, ListarLivrosUseCase listarLivro, RemoverLivroUseCase removerLivro, AtualizarLivroUseCase atualizarLivro) {
+    public LivroController(CadastrarLivroUseCase cadastrarLivro, BuscarLivrosUseCase buscarLivro, RemoverLivroUseCase removerLivro, AtualizarLivroUseCase atualizarLivro) {
         this.cadastrarLivro = cadastrarLivro;
-        this.listarLivro = listarLivro;
+        this.buscarLivro = buscarLivro;
         this.removerLivro = removerLivro;
         this.atualizarLivro = atualizarLivro;
     }
@@ -49,12 +47,13 @@ public class LivroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Livro>> listar() {
-        log.info("Requisição recebida para listar todos os livros");
-        List<Livro> livros = listarLivro.executar();
+    public ResponseEntity<List<LivroResponseDTO>> buscar() {
+        List<Livro> livros = buscarLivro.executar();
+        List<LivroResponseDTO> resposta = livros.stream()
+                .map(LivroResponseDTO::fromDomain)
+                .toList();
 
-        log.info("{} livro(s) retornado(s) ao cliente", livros.size());
-        return ResponseEntity.ok(livros);
+        return ResponseEntity.ok(resposta);
     }
 
     @DeleteMapping("/{id}")

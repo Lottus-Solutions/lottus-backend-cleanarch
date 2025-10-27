@@ -36,7 +36,7 @@ public class FazerEmprestimoUseCaseImpl implements FazerEmprestimoUseCase {
             throw new AlunoJaPossuiEmprestimoAtivoException();
         }
 
-        Livro livro = livroRepositoryPort.findById(command.livroId())
+        Livro livro = livroRepositoryPort.findById(command.fk_livro())
                 .orElseThrow(LivroNaoEncontradoException::new);
 
         livro.emprestar();
