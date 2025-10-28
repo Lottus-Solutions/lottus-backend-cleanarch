@@ -9,6 +9,7 @@ import br.com.lottus.library.domain.entities.Emprestimo;
 import br.com.lottus.library.domain.entities.StatusEmprestimo;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BuscarHistoricoAlunoUseCaseImpl implements BuscarHistoricoAlunoUseCase {
 
@@ -25,6 +26,11 @@ public class BuscarHistoricoAlunoUseCaseImpl implements BuscarHistoricoAlunoUseC
         Aluno aluno = alunoRepositoryPort.findById(matricula)
                 .orElseThrow(AlunoNaoEncontradoException::new);
 
-        return emprestimoRepositoryPort.findTop7ByAlunoAndStatusEmprestimoOrderByDataEmprestimoDesc(aluno, StatusEmprestimo.FINALIZADO);
+
+        return emprestimoRepositoryPort.findByStatusEmprestimo(StatusEmprestimo.FINALIZADO)
+                .stream()
+                .filter(e -> Objects.equals(e.getAluno().getMatricula(), aluno.getMatricula()))
+                .limit(7)
+                .toList();
     }
 }

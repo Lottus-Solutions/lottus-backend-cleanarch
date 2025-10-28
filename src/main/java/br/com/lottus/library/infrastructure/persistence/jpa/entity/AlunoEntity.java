@@ -28,6 +28,6 @@ public class AlunoEntity {
     @JoinColumn(name = "fk_turma", nullable = false)
     private TurmaEntity turma;
 
-    @OneToMany(mappedBy = "aluno", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<EmprestimoEntity> emprestimos = new ArrayList<>();
 }
