@@ -77,11 +77,6 @@ public class ControllerHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "A finalidade do arquivo não foi informada.", e.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler(IdAvatarInvalidoException.class)
-    public ResponseEntity<ErrorResponse> handleIdAvatarInvalido(IdAvatarInvalidoException e, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "ID do avatar inválido.", e.getMessage(), request.getRequestURI());
-    }
-
     @ExceptionHandler(NomeCategoriaVazioOuNuloException.class)
     public ResponseEntity<ErrorResponse> handleNomeCategoriaVazioOuNulo(NomeCategoriaVazioOuNuloException e, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "Nome não pode ser nulo ou vazio.", e.getMessage(), request.getRequestURI());
