@@ -4,8 +4,9 @@ import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaExcept
 import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.ports.in.AtualizarLivroUseCase;
-import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
 import br.com.lottus.library.application.ports.in.BuscarLivrosUseCase;
+import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
+import br.com.lottus.library.application.ports.in.ListarLivrosUseCase;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
 import br.com.lottus.library.application.usecases.AtualizarLivroUseCaseImpl;
 import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
