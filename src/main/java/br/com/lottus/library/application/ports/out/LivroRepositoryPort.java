@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LivroRepositoryPort {
-//    Page<Livro> findByBuscaOuFiltro(String valor, List<StatusLivro> status, Long categoriaId, Pageable pageable);
+    Page<LivroResponseDTO> buscarLivros(String termoBusca, List<StatusLivro> status, Long categoriaId, Pageable pageable);
     Livro save(Livro domain);
     List<Livro> findAll();
     Optional<Livro> findById(Long id);

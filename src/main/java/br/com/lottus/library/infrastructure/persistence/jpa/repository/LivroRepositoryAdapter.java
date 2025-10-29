@@ -9,6 +9,7 @@ import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.mapper.LivroEntityMapper;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.LivroRepository;
+import br.com.lottus.library.infrastructure.web.dto.LivroResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +30,10 @@ public class LivroRepositoryAdapter implements LivroRepositoryPort {
         this.categoriaRepository = categoriaRepository;
     }
 
-//    @Override
-//    public Page<Livro> findByBuscaOuFiltro(String valor, List<StatusLivro> status, Long categoriaId, Pageable pageable) {
-//        log.info("Executando busca no repository - valor: {}, status: {}, categoriaId: {}, pageable: {}",
-//                valor, status, categoriaId, pageable);
-//
-//        return repository.findByBuscaOuFiltro(valor, status, categoriaId, pageable);
-//    }
+    @Override
+    public Page<LivroResponseDTO> buscarLivros(String termoBusca, List<StatusLivro> status, Long categoriaId, Pageable pageable) {
+        return repository.findByBuscaOuFiltro(termoBusca, status, categoriaId, pageable);
+    }
 
     @Override
     public Livro save(Livro domain) {

@@ -1,16 +1,11 @@
 package br.com.lottus.library.infrastructure.web.controller;
 
-import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
-import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.command.CadastrarLivroCommand;
 import br.com.lottus.library.application.ports.in.AtualizarLivroUseCase;
 import br.com.lottus.library.application.ports.in.BuscarLivrosUseCase;
 import br.com.lottus.library.application.ports.in.CadastrarLivroUseCase;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
-import br.com.lottus.library.application.usecases.AtualizarLivroUseCaseImpl;
-import br.com.lottus.library.application.usecases.CadastrarLivroImpl;
 import br.com.lottus.library.domain.entities.Livro;
-import br.com.lottus.library.domain.entities.StatusLivro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
 import br.com.lottus.library.infrastructure.web.dto.LivroResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,8 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Livros", description = "Endpoint para o gerenciamento de livros")
 @RestController
@@ -51,13 +44,15 @@ public class LivroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LivroResponseDTO>> buscar() {
-        List<Livro> livros = buscarLivro.executar();
-        List<LivroResponseDTO> resposta = livros.stream()
-                .map(LivroResponseDTO::fromDomain)
-                .toList();
-
-        return ResponseEntity.ok(resposta);
+    public ResponseEntity<Page<LivroResponseDTO>> buscar(
+            @RequestParam(value = "valor", required = false) String valor,
+            @RequestParam(value = "status", required = false) String status,
+            @RequestParam(value = "categoriaId", required = false) Long categoriaId,
+            @RequestParam(value = "pagina", defaultValue = "0") int pagina,
+            @RequestParam(value = "tamanho", defaultValue = "10") int tamanho
+    ) {
+        Page<LivroResponseDTO> livros = buscarLivro.executar(valor, status, categoriaId, pagina, tamanho);
+        return ResponseEntity.ok(livros);
     }
 
     @DeleteMapping("/{id}")
