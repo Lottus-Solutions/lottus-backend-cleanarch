@@ -67,11 +67,6 @@ public class ControllerHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "A descrição não pode ter mais de 500 caracteres", e.getMessage(), request.getRequestURI());
     }
 
-    @ExceptionHandler(EmailInvalidoException.class)
-    public ResponseEntity<ErrorResponse> handleEmailInvalidoException(EmailInvalidoException e, HttpServletRequest request) {
-        return buildErrorResponse(HttpStatus.BAD_REQUEST, "Email inválido", e.getMessage(), request.getRequestURI());
-    }
-
     @ExceptionHandler(FinalidadeNaoInformadaException.class)
     public ResponseEntity<ErrorResponse> handleFinalidadeNaoInformada(FinalidadeNaoInformadaException e, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, "A finalidade do arquivo não foi informada.", e.getMessage(), request.getRequestURI());
