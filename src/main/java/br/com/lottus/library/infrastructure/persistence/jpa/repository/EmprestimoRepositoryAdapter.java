@@ -28,10 +28,27 @@ public class EmprestimoRepositoryAdapter implements EmprestimoRepositoryPort {
 
     @Override
     public Emprestimo save(Emprestimo emprestimo) {
-        var alunoEntity = alunoRepository.findById(emprestimo.getAluno().getMatricula()).orElseThrow();
-        var livroEntity = livroRepository.findById(emprestimo.getLivro().getId()).orElseThrow();
-        var entity = EmprestimoEntityMapper.toEntity(emprestimo, alunoEntity, livroEntity);
-        return EmprestimoEntityMapper.toDomain(repository.save(entity));
+        EmprestimoEntity entity;
+        if (emprestimo.getId() != null) {
+            // Atualização: Carrega a entidade existente
+            entity = repository.findById(emprestimo.getId())
+                    .orElseThrow(() -> new RuntimeException("Empréstimo não encontrado para atualização"));
+
+            // Atualiza os campos da entidade gerenciada
+            entity.setStatusEmprestimo(emprestimo.getStatusEmprestimo());
+            entity.setDataDevolucaoPrevista(emprestimo.getDataDevolucaoPrevista());
+            entity.setDiasAtrasados(emprestimo.getDiasAtrasados());
+            entity.setQtdRenovado(emprestimo.getQtdRenovado());
+
+        } else {
+            // Criação: Cria uma nova entidade
+            var alunoEntity = alunoRepository.findById(emprestimo.getAluno().getMatricula()).orElseThrow();
+            var livroEntity = livroRepository.findById(emprestimo.getLivro().getId()).orElseThrow();
+            entity = EmprestimoEntityMapper.toEntity(emprestimo, alunoEntity, livroEntity);
+        }
+
+        var savedEntity = repository.save(entity);
+        return EmprestimoEntityMapper.toDomain(savedEntity);
     }
 
     @Override
