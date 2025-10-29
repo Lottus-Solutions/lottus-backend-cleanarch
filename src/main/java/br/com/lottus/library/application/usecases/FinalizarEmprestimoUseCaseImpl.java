@@ -8,6 +8,7 @@ import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Emprestimo;
 import br.com.lottus.library.domain.entities.Livro;
+import jakarta.transaction.Transactional;
 
 public class FinalizarEmprestimoUseCaseImpl implements FinalizarEmprestimoUseCase {
 
@@ -21,6 +22,7 @@ public class FinalizarEmprestimoUseCaseImpl implements FinalizarEmprestimoUseCas
         this.livroRepositoryPort = livroRepositoryPort;
     }
 
+    @Transactional
     @Override
     public void executar(Long emprestimoId) {
         Emprestimo emprestimo = emprestimoRepositoryPort.findById(emprestimoId)

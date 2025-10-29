@@ -3,12 +3,15 @@ package br.com.lottus.library.infrastructure.persistence.jpa.repository;
 import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
 import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Livro;
+import br.com.lottus.library.domain.entities.StatusLivro;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.CategoriaEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.entity.LivroEntity;
 import br.com.lottus.library.infrastructure.persistence.jpa.mapper.LivroEntityMapper;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.CategoriaRepository;
 import br.com.lottus.library.infrastructure.persistence.jpa.repository.spring.LivroRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +28,14 @@ public class LivroRepositoryAdapter implements LivroRepositoryPort {
         this.repository = repository;
         this.categoriaRepository = categoriaRepository;
     }
+
+//    @Override
+//    public Page<Livro> findByBuscaOuFiltro(String valor, List<StatusLivro> status, Long categoriaId, Pageable pageable) {
+//        log.info("Executando busca no repository - valor: {}, status: {}, categoriaId: {}, pageable: {}",
+//                valor, status, categoriaId, pageable);
+//
+//        return repository.findByBuscaOuFiltro(valor, status, categoriaId, pageable);
+//    }
 
     @Override
     public Livro save(Livro domain) {

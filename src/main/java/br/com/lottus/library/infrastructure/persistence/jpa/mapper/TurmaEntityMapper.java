@@ -14,7 +14,7 @@ public class TurmaEntityMapper {
 
         var entity = new TurmaEntity();
         entity.setId(domain.getId());
-        entity.setNome(domain.getNome());
+        entity.setNome(domain.getSerie());
         return entity;
     }
 

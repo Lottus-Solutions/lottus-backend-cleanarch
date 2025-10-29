@@ -9,7 +9,7 @@ public record FazerEmprestimoCommand(
         Long matriculaAluno,
 
         @NotNull(message = "O ID do livro não pode ser nulo.")
-        Long livroId,
+        Long fk_livro,
 
         @NotNull(message = "A data do empréstimo não pode ser nula.")
         LocalDate dataEmprestimo

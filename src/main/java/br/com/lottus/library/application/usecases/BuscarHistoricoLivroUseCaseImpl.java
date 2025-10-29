@@ -9,6 +9,7 @@ import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.domain.entities.StatusEmprestimo;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BuscarHistoricoLivroUseCaseImpl implements BuscarHistoricoLivroUseCase {
 
@@ -25,6 +26,10 @@ public class BuscarHistoricoLivroUseCaseImpl implements BuscarHistoricoLivroUseC
         Livro livro = livroRepositoryPort.findById(livroId)
                 .orElseThrow(LivroNaoEncontradoException::new);
 
-        return emprestimoRepositoryPort.findTop7ByLivroAndStatusEmprestimoOrderByDataEmprestimoDesc(livro, StatusEmprestimo.FINALIZADO);
+        return emprestimoRepositoryPort.findByStatusEmprestimo(StatusEmprestimo.FINALIZADO)
+                .stream()
+                .filter(e -> Objects.equals(e.getLivro().getId(), livro.getId()))
+                .limit(7)
+                .toList();
     }
 }
