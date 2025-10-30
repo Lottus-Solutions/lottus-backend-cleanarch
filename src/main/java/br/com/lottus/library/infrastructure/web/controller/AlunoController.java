@@ -11,6 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -73,8 +76,16 @@ public class AlunoController {
 
     @Operation(summary = "Obtem alunos de uma determinada turma", description = "Retorna os alunos encontrados")
     @GetMapping("/turma/{turmaId}")
-    public ResponseEntity<List<AlunoDTO>> buscarPorTurma(@PathVariable Long turmaId) {
-        return ResponseEntity.ok(listarAlunosPorTurmaUseCase.executar(turmaId).stream().map(this::toDTO).collect(Collectors.toList()));
+    public ResponseEntity<Page<AlunoDTO>> buscarPorTurma(
+            @PathVariable Long turmaId,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho
+    ) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        Page<AlunoDTO> alunos = listarAlunosPorTurmaUseCase.executar(turmaId, pageable)
+                .map(this::toDTO);
+
+        return ResponseEntity.ok(alunos);
     }
 
     @Operation(summary = "Lista todos os alunos", description = "Retorna todos os alunos cadastrados")

@@ -7,6 +7,8 @@ import br.com.lottus.library.application.ports.out.AlunoRepositoryPort;
 import br.com.lottus.library.application.ports.out.TurmaRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Turma;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,11 +23,11 @@ public class ListarAlunosPorTurmaUseCaseImpl implements ListarAlunosPorTurmaUseC
     }
 
     @Override
-    public List<Aluno> executar(Long turmaId) {
+    public Page<Aluno> executar(Long turmaId, Pageable pageable) {
         Turma turma = turmaRepositoryPort.findById(turmaId)
                 .orElseThrow(TurmaNaoEncontradaException::new);
 
-        List<Aluno> alunos = alunoRepositoryPort.findAllByTurma(turma);
+        Page<Aluno> alunos = alunoRepositoryPort.findAllByTurma(turma, pageable);
 
         if (alunos.isEmpty()) {
             throw new NenhumAlunoEncontradoException();
