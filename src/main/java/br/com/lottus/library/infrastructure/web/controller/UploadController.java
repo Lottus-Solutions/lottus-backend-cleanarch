@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "Upload", description = "Endpoint para o upload de arquivos")
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/api/upload")
 public class UploadController {
 
     private final EnfileirarProcessamentoArquivoUseCase useCase;

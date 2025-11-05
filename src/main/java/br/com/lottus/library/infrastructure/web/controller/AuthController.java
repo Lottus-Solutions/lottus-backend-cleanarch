@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Autenticação", description = "Endpoint para cadastro e autenticação de usuários")
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     private final CadastrarUsuarioUseCase cadastrarUsuarioUseCase;
     private final LoginUseCase loginUseCase;

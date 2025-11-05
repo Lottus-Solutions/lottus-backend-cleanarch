@@ -21,7 +21,7 @@ import java.util.List;
 
 @Tag(name = "Empréstimos", description = "Endpoint para gerenciamento dos empréstimos")
 @RestController
-@RequestMapping("/emprestimos")
+@RequestMapping("/api/emprestimos")
 @RequiredArgsConstructor
 public class EmprestimoController {
 

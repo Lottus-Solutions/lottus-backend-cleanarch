@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Tag(name = "Alunos", description = "Endpoint para o gerenciamento de alunos")
 @RestController
-@RequestMapping("/alunos")
+@RequestMapping("/api/alunos")
 @RequiredArgsConstructor
 public class AlunoController {
 

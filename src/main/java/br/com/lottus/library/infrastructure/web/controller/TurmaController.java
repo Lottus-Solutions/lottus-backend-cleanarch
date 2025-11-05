@@ -15,7 +15,7 @@ import java.util.List;
 
 @Tag(name = "Turmas", description = "Endpoint para o gerenciamento de turmas")
 @RestController
-@RequestMapping("/turmas")
+@RequestMapping("/api/turmas")
 @RequiredArgsConstructor
 public class TurmaController {
 

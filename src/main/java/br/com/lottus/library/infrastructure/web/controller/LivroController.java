@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Livros", description = "Endpoint para o gerenciamento de livros")
 @RestController
-@RequestMapping("/livros")
+@RequestMapping("/api/livros")
 @Slf4j
 public class LivroController {
 
