@@ -2,6 +2,8 @@ package br.com.lottus.library.infrastructure.security;
 
 import br.com.lottus.library.application.ports.out.UsuarioRepositoryPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         br.com.lottus.library.domain.entities.Usuario usuario = usuarioRepositoryPort.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
 
-        return new User(usuario.getEmail(), usuario.getSenha(), Collections.emptyList());
+        return new User(usuario.getEmail(), usuario.getSenha(), Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }

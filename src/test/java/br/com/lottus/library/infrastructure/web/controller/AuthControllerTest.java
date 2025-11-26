@@ -2,6 +2,7 @@ package br.com.lottus.library.infrastructure.web.controller;
 
 import br.com.lottus.library.application.exceptions.UsuarioJaCadastradoComEmailException;
 import br.com.lottus.library.application.ports.in.CadastrarUsuarioUseCase;
+import br.com.lottus.library.application.ports.in.LoginUseCase;
 import br.com.lottus.library.domain.entities.Usuario;
 import br.com.lottus.library.domain.exceptions.SenhaInvalidaException;
 import br.com.lottus.library.infrastructure.web.command.RegisterUserRequest;
@@ -32,6 +33,9 @@ class AuthControllerTest {
 
     @MockBean
     private CadastrarUsuarioUseCase cadastrarUsuarioUseCase;
+
+    @MockBean
+    private LoginUseCase loginUseCase;
 
     @Test
     @DisplayName("Deve registrar um usuário com sucesso e retornar status 200 OK")

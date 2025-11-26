@@ -11,12 +11,12 @@ public class Usuario {
     private String email;
     private String senha;
     private LocalDate dataRegistro;
-    private int idAvatar;
+    private Integer idAvatar;
 
     protected Usuario() {
     }
 
-    private Usuario(Long id, String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
+        private Usuario(Long id, String nome, String email, String senha, LocalDate dataRegistro, Integer idAvatar) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -29,7 +29,7 @@ public class Usuario {
         return new Usuario(null, nome, email, senha, dataRegistro, idAvatar);
     }
 
-    public static Usuario criarComId(Long id, String nome, String email, String senha, LocalDate dataRegistro, int idAvatar) {
+    public static Usuario criarComId(Long id, String nome, String email, String senha, LocalDate dataRegistro, Integer idAvatar) {
         return new Usuario(id, nome, email, senha, dataRegistro, idAvatar);
     }
 
@@ -90,11 +90,11 @@ public class Usuario {
         this.dataRegistro = dataRegistro;
     }
 
-    public int getIdAvatar() {
+    public Integer getIdAvatar() {
         return idAvatar;
     }
 
-    public void setIdAvatar(int idAvatar) {
+    public void setIdAvatar(Integer idAvatar) {
         this.idAvatar = idAvatar;
     }
 }

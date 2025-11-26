@@ -37,7 +37,7 @@
         <appender-ref ref="file"/>
     </root>
 
-    <logger name="br.com.lottus.library" level="DEBUG" additivity="false">
+    <logger name="br.com.lottus.library" level="INFO" additivity="false">
         <appender-ref ref="colored-console"/>
         <appender-ref ref="file"/>
     </logger>

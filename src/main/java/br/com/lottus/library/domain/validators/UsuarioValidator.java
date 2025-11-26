@@ -18,7 +18,6 @@ public class UsuarioValidator {
         validarNome(command.nome());
         validarEmail(command.email());
         validarSenha(command.senha());
-        validarIdAvatar(command.idAvatar());
     }
 
     private static void validarNome(String nome) {
@@ -39,9 +38,4 @@ public class UsuarioValidator {
         }
     }
 
-    private static void validarIdAvatar(Integer idAvatar) {
-        if (idAvatar == null) {
-            throw new IdAvatarInvalidoException("O id do avatar é obrigatório.");
-        }
-    }
 }

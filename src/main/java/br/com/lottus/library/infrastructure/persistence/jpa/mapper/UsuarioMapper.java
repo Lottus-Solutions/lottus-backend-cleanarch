@@ -1,4 +1,4 @@
-package br.com.lottus.library.infrastructure.persistence.mapper;
+package br.com.lottus.library.infrastructure.persistence.jpa.mapper;
 
 import br.com.lottus.library.domain.entities.Usuario;
 import br.com.lottus.library.infrastructure.persistence.entity.UsuarioEntity;
@@ -22,7 +22,8 @@ public class UsuarioMapper {
                 entity.getEmail(),
                 entity.getSenha(),
                 entity.getDataCadastro(),
-                entity.getIdAvatar());
+                entity.getIdAvatar()
+        );
     }
 
     /**

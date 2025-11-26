@@ -16,7 +16,7 @@ public record RegisterUserRequest (@NotNull String nome,
                 nome(),
                 email(),
                 senha(),
-                idAvatar(),
+                1,
                 LocalDate.now()
         );
     }

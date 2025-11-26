@@ -3,7 +3,7 @@ package br.com.lottus.library.infrastructure.persistence.repository;
 import br.com.lottus.library.application.ports.out.UsuarioRepositoryPort;
 import br.com.lottus.library.domain.entities.Usuario;
 import br.com.lottus.library.infrastructure.persistence.entity.UsuarioEntity;
-import br.com.lottus.library.infrastructure.persistence.mapper.UsuarioMapper;
+import br.com.lottus.library.infrastructure.persistence.jpa.mapper.UsuarioMapper;
 import br.com.lottus.library.infrastructure.persistence.repository.spring.JpaUsuarioRepository;
 import org.springframework.stereotype.Component;
 

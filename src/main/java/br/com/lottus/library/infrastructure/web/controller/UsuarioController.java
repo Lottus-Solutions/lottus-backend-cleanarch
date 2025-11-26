@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 @SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
 

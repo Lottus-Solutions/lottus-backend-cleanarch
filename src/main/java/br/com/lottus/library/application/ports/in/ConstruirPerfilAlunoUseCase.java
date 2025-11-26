@@ -1,0 +1,7 @@
+package br.com.lottus.library.application.ports.in;
+
+import br.com.lottus.library.infrastructure.web.dto.PerfilAlunoResponse;
+
+public interface ConstruirPerfilAlunoUseCase {
+    PerfilAlunoResponse executar(Long matricula);
+}
