@@ -5,6 +5,7 @@ import br.com.lottus.library.application.ports.out.EmprestimoRepositoryPort;
 import br.com.lottus.library.domain.entities.Emprestimo;
 import br.com.lottus.library.domain.entities.StatusEmprestimo;
 import br.com.lottus.library.infrastructure.web.dto.EmprestimoResponseDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,6 +21,7 @@ public class ListarEmprestimosUseCaseImpl implements ListarEmprestimosUseCase {
     }
 
     @Override
+    @Cacheable(value = "emprestimos", key = "{#busca, #atrasados, #pageable}")
     public Page<EmprestimoResponseDTO> executar(String busca, boolean atrasados, Pageable pageable) {
         List<StatusEmprestimo> statusList = Arrays.asList(StatusEmprestimo.ATIVO, StatusEmprestimo.ATRASADO);
 

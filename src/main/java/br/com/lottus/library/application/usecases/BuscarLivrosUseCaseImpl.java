@@ -5,6 +5,7 @@ import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.StatusLivro;
 import br.com.lottus.library.infrastructure.web.dto.LivroResponseDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public class BuscarLivrosUseCaseImpl implements BuscarLivrosUseCase {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "livros", key = "{#termoBusca, #status, #categoriaId, #pagina, #tamanho}")
     public Page<LivroResponseDTO> executar(String termoBusca, String status, Long categoriaId, int pagina, int tamanho) {
         Pageable pageable = PageRequest.of(pagina, tamanho, Sort.by("id").descending());
 

@@ -7,6 +7,7 @@ import br.com.lottus.library.application.ports.out.AlunoRepositoryPort;
 import br.com.lottus.library.application.ports.out.TurmaRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Turma;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
 
@@ -19,6 +20,7 @@ public class AdicionarAlunoUseCaseImpl implements AdicionarAlunoUseCase {
     }
 
     @Override
+    @CacheEvict(value = "alunos", allEntries = true)
     public Aluno executar(AdicionarAlunoCommand command) {
         Turma turma = turmaRepositoryPort.findById(command.turmaId())
                 .orElseThrow(TurmaNaoEncontradaException::new);

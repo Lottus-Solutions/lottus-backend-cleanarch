@@ -3,6 +3,7 @@ package br.com.lottus.library.application.usecases;
 import br.com.lottus.library.application.exceptions.LivroNaoEncontradoException;
 import br.com.lottus.library.application.ports.in.RemoverLivroUseCase;
 import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class RemoverLivroUseCaseImpl implements RemoverLivroUseCase {
 
@@ -13,6 +14,7 @@ public class RemoverLivroUseCaseImpl implements RemoverLivroUseCase {
     }
 
     @Override
+    @CacheEvict(value = {"livros", "categorias"}, allEntries = true)
     public void executar(Long livroId) {
         boolean existe = livroPort.findById(livroId).isPresent();
         if (!existe) {

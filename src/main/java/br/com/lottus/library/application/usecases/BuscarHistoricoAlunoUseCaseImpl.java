@@ -11,7 +11,8 @@ import br.com.lottus.library.domain.entities.StatusEmprestimo;
 import java.util.List;
 import java.util.Objects;
 
-public class BuscarHistoricoAlunoUseCaseImpl implements BuscarHistoricoAlunoUseCase {
+public class
+BuscarHistoricoAlunoUseCaseImpl implements BuscarHistoricoAlunoUseCase {
 
     private final EmprestimoRepositoryPort emprestimoRepositoryPort;
     private final AlunoRepositoryPort alunoRepositoryPort;
@@ -20,6 +21,7 @@ public class BuscarHistoricoAlunoUseCaseImpl implements BuscarHistoricoAlunoUseC
         this.emprestimoRepositoryPort = emprestimoRepositoryPort;
         this.alunoRepositoryPort = alunoRepositoryPort;
     }
+
 
     @Override
     public List<Emprestimo> executar(Long matricula) {

@@ -2,6 +2,7 @@ package br.com.lottus.library.infrastructure.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 public record EmprestimoResponseDTO(
@@ -12,5 +13,5 @@ public record EmprestimoResponseDTO(
         @JsonFormat(pattern = "dd/MM/yyyy")
         LocalDate dataDevolucaoPrevista,
         int diasAtrasados
-) {
+) implements Serializable {
 }

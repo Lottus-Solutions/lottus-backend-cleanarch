@@ -3,6 +3,7 @@ package br.com.lottus.library.application.usecases;
 import br.com.lottus.library.application.exceptions.CategoriaNaoEncontradaException;
 import br.com.lottus.library.application.ports.in.RemoverCategoriaUseCase;
 import br.com.lottus.library.application.ports.out.CategoriaRepositoryPort;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class RemoverCategoriaUseCaseImpl implements RemoverCategoriaUseCase {
 
@@ -13,6 +14,7 @@ public class RemoverCategoriaUseCaseImpl implements RemoverCategoriaUseCase {
     }
 
     @Override
+    @CacheEvict(value = "categorias", allEntries = true)
     public void executar(Long id) {
         if (!categoriaExiste(id)) {
             throw new CategoriaNaoEncontradaException();

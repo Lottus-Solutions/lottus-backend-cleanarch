@@ -3,6 +3,7 @@ package br.com.lottus.library.application.usecases;
 import br.com.lottus.library.application.exceptions.AlunoNaoEncontradoException;
 import br.com.lottus.library.application.ports.in.RemoverAlunoUseCase;
 import br.com.lottus.library.application.ports.out.AlunoRepositoryPort;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class RemoverAlunoUseCaseImpl implements RemoverAlunoUseCase {
 
@@ -13,6 +14,7 @@ public class RemoverAlunoUseCaseImpl implements RemoverAlunoUseCase {
     }
 
     @Override
+    @CacheEvict(value = "alunos", allEntries = true)
     public void executar(Long matricula) {
         alunoRepositoryPort.findById(matricula).orElseThrow(AlunoNaoEncontradoException::new);
         alunoRepositoryPort.deleteById(matricula);

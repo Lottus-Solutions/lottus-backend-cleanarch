@@ -11,6 +11,7 @@ import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Emprestimo;
 import br.com.lottus.library.domain.entities.Livro;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.time.LocalDate;
 
@@ -28,6 +29,7 @@ public class FazerEmprestimoUseCaseImpl implements FazerEmprestimoUseCase {
     }
 
     @Override
+    @CacheEvict(value = {"emprestimos", "livros", "alunos"}, allEntries = true)
     public Emprestimo executar(FazerEmprestimoCommand command) {
         Aluno aluno = alunoRepositoryPort.findById(command.matriculaAluno())
                 .orElseThrow(AlunoNaoEncontradoException::new);
