@@ -9,6 +9,7 @@ import br.com.lottus.library.application.ports.out.LivroRepositoryPort;
 import br.com.lottus.library.domain.entities.Categoria;
 import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.domain.entities.StatusLivro;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class CadastrarLivroImpl implements CadastrarLivroUseCase {
 
@@ -21,6 +22,7 @@ public class CadastrarLivroImpl implements CadastrarLivroUseCase {
     }
 
     @Override
+    @CacheEvict(value = {"livros", "categorias"}, allEntries = true)
     public Livro executar(CadastrarLivroCommand command) {
         Boolean existe = livroPort.existsByNomeIgnoreCase(command.nome());
         if (Boolean.TRUE.equals(existe)) {

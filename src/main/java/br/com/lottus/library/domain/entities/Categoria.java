@@ -3,9 +3,10 @@ package br.com.lottus.library.domain.entities;
 import br.com.lottus.library.domain.exceptions.CorCategoriaVazioOuNuloException;
 import br.com.lottus.library.domain.exceptions.NomeCategoriaVazioOuNuloException;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Categoria {
+public class Categoria implements Serializable {
     private Long id;
     private String nome;
     private String cor;
@@ -15,6 +16,9 @@ public class Categoria {
         this.nome = validarNome(nome);
         this.cor = validarCor(cor);
     }
+
+    // Construtor para frameworks (Jackson, Hibernate)
+    protected Categoria() {}
 
     public static Categoria criar(String nome, String cor) {
         String nomeValidado = validarNome(nome);

@@ -9,6 +9,7 @@ import br.com.lottus.library.domain.entities.Categoria;
 import br.com.lottus.library.domain.entities.Livro;
 import br.com.lottus.library.infrastructure.web.command.AtualizarLivroCommand;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 
 @Slf4j
 public class AtualizarLivroUseCaseImpl implements AtualizarLivroUseCase {
@@ -22,6 +23,7 @@ public class AtualizarLivroUseCaseImpl implements AtualizarLivroUseCase {
     }
 
     @Override
+    @CacheEvict(value = {"livros", "categorias"}, allEntries = true)
     public Livro executar(Long id, AtualizarLivroCommand command) {
         log.info("Iniciando atualização do livro com ID: {}", id);
 

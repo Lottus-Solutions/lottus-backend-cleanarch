@@ -2,9 +2,10 @@ package br.com.lottus.library.domain.entities;
 
 import br.com.lottus.library.domain.exceptions.StatusInvalidoException;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public enum StatusLivro {
+public enum StatusLivro implements Serializable {
     DISPONIVEL,
     RESERVADO;
 

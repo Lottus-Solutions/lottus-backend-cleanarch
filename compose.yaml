@@ -25,5 +25,5 @@ services:
       - rabbitmq-data:/var/lib/rabbitmq
 
 volumes:
-    mysql-data:
-    rabbitmq-data:
+  mysql-data:
+  rabbitmq-data:

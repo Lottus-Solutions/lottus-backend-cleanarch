@@ -9,6 +9,7 @@ import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Emprestimo;
 import br.com.lottus.library.domain.entities.Livro;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class FinalizarEmprestimoUseCaseImpl implements FinalizarEmprestimoUseCase {
 
@@ -24,6 +25,7 @@ public class FinalizarEmprestimoUseCaseImpl implements FinalizarEmprestimoUseCas
 
     @Transactional
     @Override
+    @CacheEvict(value = {"emprestimos", "livros", "alunos"}, allEntries = true)
     public void executar(Long emprestimoId) {
         Emprestimo emprestimo = emprestimoRepositoryPort.findById(emprestimoId)
                 .orElseThrow(EmprestimoNaoEncontradoException::new);

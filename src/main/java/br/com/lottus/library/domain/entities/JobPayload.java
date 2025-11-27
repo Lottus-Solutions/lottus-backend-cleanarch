@@ -2,9 +2,10 @@ package br.com.lottus.library.domain.entities;
 
 import br.com.lottus.library.domain.exceptions.FinalidadeNaoInformadaException;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class JobPayload {
+public class JobPayload implements Serializable {
     private final String filePath;
     private final String finalidade;
     private final String token;

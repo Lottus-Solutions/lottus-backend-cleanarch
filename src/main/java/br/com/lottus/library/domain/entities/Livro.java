@@ -3,9 +3,10 @@ package br.com.lottus.library.domain.entities;
 import br.com.lottus.library.domain.exceptions.*;
 import br.com.lottus.library.domain.entities.Categoria;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Livro {
+public class Livro implements Serializable {
     private Long id;
     private String nome;
     private String autor;
@@ -25,6 +26,9 @@ public class Livro {
         this.status = Objects.requireNonNull(status, "Status do livro não pode ser nulo");
         this.descricao = validarDescricao(descricao);
     }
+
+    // Construtor para frameworks (Jackson, Hibernate)
+    protected Livro() {}
 
     public static Livro criar(String nome, String autor, Categoria categoria, Integer quantidade, StatusLivro status, String descricao) {
         return new Livro(null, nome, autor, categoria, quantidade, quantidade, status, descricao);

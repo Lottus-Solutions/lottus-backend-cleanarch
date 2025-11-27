@@ -2,9 +2,10 @@ package br.com.lottus.library.domain.entities;
 
 import br.com.lottus.library.application.ports.command.CadastrarUsuarioCommand;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Usuario {
+public class Usuario implements Serializable {
     private Long id;
 
     private String nome;
