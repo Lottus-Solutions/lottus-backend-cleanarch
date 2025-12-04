@@ -1,4 +1,6 @@
 package br.com.lottus.library.infrastructure.web.dto;
 
-public record UploadResponse(String mensagem) {
+import java.io.Serializable;
+
+public record UploadResponse(String mensagem) implements Serializable {
 }

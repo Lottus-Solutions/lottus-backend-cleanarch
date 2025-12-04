@@ -1,5 +1,7 @@
 package br.com.lottus.library.infrastructure.web.dto;
 
+import java.io.Serializable;
+
 public record AlunoDTO(
         Long matricula,
         String nome,
@@ -7,5 +9,5 @@ public record AlunoDTO(
         Long turmaId,
         Integer qtdLivrosLidos,
         String livroAtual
-) {
+) implements Serializable {
 }

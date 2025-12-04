@@ -7,6 +7,7 @@ import br.com.lottus.library.application.ports.out.AlunoRepositoryPort;
 import br.com.lottus.library.application.ports.out.TurmaRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Turma;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -23,6 +24,7 @@ public class ListarAlunosPorTurmaUseCaseImpl implements ListarAlunosPorTurmaUseC
     }
 
     @Override
+    @Cacheable(value = "alunos", key = "{#turmaId, #pageable}")
     public Page<Aluno> executar(Long turmaId, Pageable pageable) {
         Turma turma = turmaRepositoryPort.findById(turmaId)
                 .orElseThrow(TurmaNaoEncontradaException::new);

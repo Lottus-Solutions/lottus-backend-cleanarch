@@ -1,10 +1,11 @@
 package br.com.lottus.library.application.usecases;
 
-import br.com.lottus.library.application.ports.command.CadastrarCategoriaCommand;
 import br.com.lottus.library.application.exceptions.CategoriaJaExistenteException;
+import br.com.lottus.library.application.ports.command.CadastrarCategoriaCommand;
 import br.com.lottus.library.application.ports.in.CadastrarCategoriaUseCase;
 import br.com.lottus.library.application.ports.out.CategoriaRepositoryPort;
 import br.com.lottus.library.domain.entities.Categoria;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class CadastrarCategoriaImpl implements CadastrarCategoriaUseCase {
 
@@ -15,6 +16,7 @@ public class CadastrarCategoriaImpl implements CadastrarCategoriaUseCase {
     }
 
     @Override
+    @CacheEvict(value = "categorias", allEntries = true)
     public Categoria executar(CadastrarCategoriaCommand comando) {
         if (port.existsByNome(comando.nome())) {
             throw new CategoriaJaExistenteException();

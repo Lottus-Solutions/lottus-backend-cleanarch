@@ -1,9 +1,10 @@
 package br.com.lottus.library.domain.entities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Emprestimo {
+public class Emprestimo implements Serializable {
 
     private Long id;
     private Aluno aluno;
@@ -24,6 +25,9 @@ public class Emprestimo {
         this.diasAtrasados = 0;
         this.qtdRenovado = 0;
     }
+
+    // Construtor para frameworks (Jackson, Hibernate)
+    protected Emprestimo() {}
 
     public static Emprestimo criar(Aluno aluno, Livro livro, LocalDate dataEmprestimo, LocalDate dataDevolucaoPrevista) {
         return new Emprestimo(null, aluno, livro, dataEmprestimo, dataDevolucaoPrevista, StatusEmprestimo.ATIVO);

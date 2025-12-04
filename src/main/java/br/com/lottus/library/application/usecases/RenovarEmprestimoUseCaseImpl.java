@@ -4,6 +4,7 @@ import br.com.lottus.library.application.exceptions.EmprestimoNaoEncontradoExcep
 import br.com.lottus.library.application.ports.in.RenovarEmprestimoUseCase;
 import br.com.lottus.library.application.ports.out.EmprestimoRepositoryPort;
 import br.com.lottus.library.domain.entities.Emprestimo;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class RenovarEmprestimoUseCaseImpl implements RenovarEmprestimoUseCase {
 
@@ -15,6 +16,7 @@ public class RenovarEmprestimoUseCaseImpl implements RenovarEmprestimoUseCase {
     }
 
     @Override
+    @CacheEvict(value = "emprestimos", allEntries = true)
     public void executar(Long emprestimoId) {
         Emprestimo emprestimo = emprestimoRepositoryPort.findById(emprestimoId)
                 .orElseThrow(EmprestimoNaoEncontradoException::new);

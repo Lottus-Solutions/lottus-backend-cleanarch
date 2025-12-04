@@ -8,6 +8,7 @@ import br.com.lottus.library.application.ports.out.AlunoRepositoryPort;
 import br.com.lottus.library.application.ports.out.TurmaRepositoryPort;
 import br.com.lottus.library.domain.entities.Aluno;
 import br.com.lottus.library.domain.entities.Turma;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class EditarAlunoUseCaseImpl implements EditarAlunoUseCase {
 
@@ -20,6 +21,7 @@ public class EditarAlunoUseCaseImpl implements EditarAlunoUseCase {
     }
 
     @Override
+    @CacheEvict(value = "alunos", allEntries = true)
     public Aluno executar(Long matricula, EditarAlunoCommand command) {
         Aluno aluno = alunoRepositoryPort.findById(matricula)
                 .orElseThrow(AlunoNaoEncontradoException::new);

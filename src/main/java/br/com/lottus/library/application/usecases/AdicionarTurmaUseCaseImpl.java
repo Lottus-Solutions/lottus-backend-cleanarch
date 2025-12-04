@@ -5,6 +5,7 @@ import br.com.lottus.library.application.ports.command.GerenciarTurmaCommand;
 import br.com.lottus.library.application.ports.in.AdicionarTurmaUseCase;
 import br.com.lottus.library.application.ports.out.TurmaRepositoryPort;
 import br.com.lottus.library.domain.entities.Turma;
+import org.springframework.cache.annotation.CacheEvict;
 
 public class AdicionarTurmaUseCaseImpl implements AdicionarTurmaUseCase {
 
@@ -15,6 +16,7 @@ public class AdicionarTurmaUseCaseImpl implements AdicionarTurmaUseCase {
     }
 
     @Override
+    @CacheEvict(value = "turmas", allEntries = true)
     public Turma executar(GerenciarTurmaCommand command) {
         if (turmaRepositoryPort.existsByNomeIgnoreCase(command.nome())) {
             throw new TurmaJaCadastradaException();

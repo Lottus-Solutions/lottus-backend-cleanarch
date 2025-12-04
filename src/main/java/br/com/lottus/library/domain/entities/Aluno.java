@@ -1,10 +1,11 @@
 package br.com.lottus.library.domain.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Aluno {
+public class Aluno implements Serializable {
 
     private Long matricula;
     private String nome;
@@ -20,6 +21,9 @@ public class Aluno {
         this.qtdBonus = 0.0;
         this.qtdLivrosLidos = 0;
     }
+
+    // Construtor para frameworks (Jackson, Hibernate)
+    protected Aluno() {}
 
     public static Aluno criar(String nome, Turma turma) {
         return new Aluno(null, nome, turma);

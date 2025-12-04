@@ -1,6 +1,8 @@
 package br.com.lottus.library.domain.entities;
 
-public enum StatusEmprestimo {
+import java.io.Serializable;
+
+public enum StatusEmprestimo implements Serializable {
     ATIVO,
     DEVOLVIDO,
     ATRASADO,
