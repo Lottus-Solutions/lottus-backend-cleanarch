@@ -34,8 +34,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
     private static final List<String> IGNORED_PATHS = Arrays.asList(
-            "/auth/login",
-            "/auth/register",
+            "/api/auth/login",
+            "/api/auth/register",
             "/swagger-ui/",
             "/v3/api-docs"
     );

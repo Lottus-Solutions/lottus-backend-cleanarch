@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         // 2. Adicionados os endpoints que estavam faltando para manter a paridade
                         .requestMatchers(
-                                "/auth/**",
+                                "/api/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
@@ -72,7 +72,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://44.201.39.38", "http://10.0.0.7", "https://44.201.39.38", "https://10.0.0.7"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://44.201.39.38", "http://3.229.14.232", "http://10.0.0.239", "http://10.0.0.216"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
