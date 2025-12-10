@@ -47,7 +47,7 @@ public class TurmaRepositoryAdapter implements TurmaRepositoryPort {
     public Optional<Turma> findByNome(String nome) {
         return repository.findByNome(nome)
                 .stream()
-                .map(TurmaEntityMapper::toDomain)
-                .findFirst();
+                .findFirst() // Pega o primeiro se houver duplicatas
+                .map(TurmaEntityMapper::toDomain);
     }
 }

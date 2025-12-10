@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         // 2. Adicionados os endpoints que estavam faltando para manter a paridade
                         .requestMatchers(
-                                "/auth/**",
+                                "/api/auth/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

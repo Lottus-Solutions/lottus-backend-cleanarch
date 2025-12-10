@@ -14,11 +14,17 @@ public class ObterOuCadastrarTurmaUseCaseImpl implements ObterOuCadastrarTurmaUs
     }
 
     @Override
-    public synchronized Turma executar(GerenciarTurmaCommand command) {
-       return turmaRepository.findByNome(command.nome())
-               .orElseGet(() -> {
-                   Turma turmaNova = Turma.criar(command.nome());
-                   return turmaRepository.save(turmaNova);
-               });
+    public Turma executar(GerenciarTurmaCommand command) {
+        return turmaRepository.findByNome(command.nome())
+                .orElseGet(() -> {
+                    try {
+                        Turma turmaNova = Turma.criar(command.nome());
+                        return turmaRepository.save(turmaNova);
+                    } catch (Exception e) {
+                        // Se falhar (ex: condição de corrida criando duplicata), tenta buscar novamente
+                        return turmaRepository.findByNome(command.nome())
+                                .orElseThrow(() -> new RuntimeException("Erro ao obter ou criar turma: " + command.nome(), e));
+                    }
+                });
     }
 }
