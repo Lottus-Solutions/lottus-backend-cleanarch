@@ -37,41 +37,30 @@ O projeto segue os princípios da **Clean Architecture**, garantindo um código 
 
 ```mermaid
 graph TD;
-    classDef outer fill:#D1E8FF,stroke:#333,stroke-width:2px;
-    classDef middle fill:#A8D5FF,stroke:#333,stroke-width:2px;
-    classDef inner fill:#7FC1FF,stroke:#333,stroke-width:2px;
-
-    subgraph Infrastructure
-        direction LR
-        A[API Controllers]
-        B[Spring Data / JPA]
-        C[Redis Client]
-        D[RabbitMQ Client]
+    subgraph "Infrastructure (Camada Externa)"
+        A["API Controllers"]
+        B["Spring Data / JPA"]
+        C["Redis Client"]
+        D["RabbitMQ Client"]
     end
 
-    subgraph Application
-        direction LR
-        E[Use Cases (Lógica de Negócio)]
-        F[Interfaces / Ports (Contratos)]
+    subgraph "Application (Camada de Aplicação)"
+        E["Use Cases (Lógica de Negócio)"]
+        F["Interfaces / Ports (Contratos)"]
     end
 
-    subgraph Domain
-        direction LR
-        G[Entidades]
-        H[Regras de Negócio Puras]
+    subgraph "Domain (Camada de Domínio)"
+        G["Entidades"]
+        H["Regras de Negócio Puras"]
     end
 
-    A -- Chama --> E;
-    E -- Usa --> F;
-    B -- Implementa --> F;
-    C -- Implementa --> F;
-    D -- Implementa --> F;
-    E -- Manipula --> G;
-    H -- Pertence a --> G;
-
-    class A,B,C,D outer;
-    class E,F middle;
-    class G,H inner;
+    A --"Chama"--> E;
+    E --"Usa"--> F;
+    B --"Implementa"--> F;
+    C --"Implementa"--> F;
+    D --"Implementa"--> F;
+    E --"Manipula"--> G;
+    H --"Define regras para"--> G;
 ```
 
 - **Domain**: Camada mais interna. Contém as entidades de negócio (`Livro`, `Aluno`) e as regras que não dependem de nenhuma tecnologia externa.
@@ -91,42 +80,40 @@ sequenceDiagram
     participant RabbitMQ
     participant UploaderService
 
-    box rgb(255, 250, 240) Autenticação
-        User->>+API: POST /auth/login (user, pass)
-        API->>+MySQL: Validar credenciais
-        MySQL-->>-API: Usuário OK
-        API->>+Redis: Armazenar JWT com TTL (expiração)
+    Note over User, API: Fluxo de Autenticação
+    User->>+API: POST /auth/login (user, pass)
+    API->>+MySQL: Validar credenciais
+    MySQL-->>-API: Usuário OK
+    API->>+Redis: Armazenar JWT com TTL (expiração)
+    Redis-->>-API: OK
+    API-->>-User: Retorna JWT Token
+
+    Note over User, API: Fluxo de Consulta de Dados
+    User->>+API: GET /livros/{id} (com JWT)
+    API->>API: Validar JWT
+    API->>+Redis: Buscar "livro:{id}" no cache
+    alt Cache Hit (Dado encontrado)
+        Redis-->>-API: Dados do livro (cache)
+        API-->>-User: Resposta rápida com dados do livro
+    else Cache Miss (Dado não encontrado)
+        Redis-->>-API: Nulo
+        API->>+MySQL: SELECT * FROM livros WHERE id = ?
+        MySQL-->>-API: Dados do livro (banco)
+        API->>+Redis: Salvar "livro:{id}" no cache
         Redis-->>-API: OK
-        API-->>-User: Retorna JWT Token
+        API-->>-User: Resposta com dados do livro
     end
 
-    box rgb(240, 255, 245) Consulta de Dados
-        User->>+API: GET /livros/{id} (com JWT)
-        API->>API: Validar JWT
-        API->>+Redis: Buscar "livro:{id}" no cache
-        alt Cache Hit (Dado encontrado)
-            Redis-->>-API: Dados do livro (cache)
-            API-->>-User: Resposta rápida com dados do livro
-        else Cache Miss (Dado não encontrado)
-            Redis-->>-API: Nulo
-            API->>+MySQL: SELECT * FROM livros WHERE id = ?
-            MySQL-->>-API: Dados do livro (banco)
-            API->>+Redis: Salvar "livro:{id}" no cache
-            Redis-->>-API: OK
-            API-->>-User: Resposta com dados do livro
-        end
-    end
-
-    box rgb(240, 245, 255) Processamento Assíncrono
-        User->>+API: POST /uploads/processar (arquivo.xlsx)
-        API->>+RabbitMQ: Enfileirar job {caminho_arquivo}
-        RabbitMQ-->>-API: Job recebido
-        API-->>-User: { "mensagem": "Seu arquivo está sendo processado." }
-        note right of RabbitMQ: O UploaderService consome a fila de forma independente.
-        RabbitMQ->>+UploaderService: Consumir job da fila
-        UploaderService->>UploaderService: Processar arquivo e salvar no banco
-        UploaderService-->>-RabbitMQ: ACK (Confirmação)
-    end
+    Note over User, API: Fluxo de Processamento Assíncrono
+    User->>+API: POST /uploads/processar (arquivo.xlsx)
+    API->>+RabbitMQ: Enfileirar job {caminho_arquivo}
+    RabbitMQ-->>-API: Job recebido
+    API-->>-User: { "mensagem": "Seu arquivo está sendo processado." }
+    
+    note right of RabbitMQ: O UploaderService consome a fila de forma independente.
+    RabbitMQ->>+UploaderService: Consumir job da fila
+    UploaderService->>UploaderService: Processar arquivo e salvar no banco
+    UploaderService-->>-RabbitMQ: ACK (Confirmação)
 ```
 
 ## Pré-requisitos
