@@ -84,36 +84,36 @@ sequenceDiagram
     User->>+API: POST /auth/login (user, pass)
     API->>+MySQL: Validar credenciais
     MySQL-->>-API: Usuário OK
-    API->>+Redis: Armazenar JWT com TTL (expiração)
+    API->>+Redis: Armazenar JWT com TTL
     Redis-->>-API: OK
     API-->>-User: Retorna JWT Token
 
-    Note over User, API: Fluxo de Consulta de Dados
+    Note over User, API: Consulta de Dados (Cenário: Cache Hit)
     User->>+API: GET /livros/{id} (com JWT)
-    API->>API: Validar JWT
-    API->>+Redis: Buscar "livro:{id}" no cache
-    alt Cache Hit (Dado encontrado)
-        Redis-->>-API: Dados do livro (cache)
-        API-->>-User: Resposta rápida com dados do livro
-    else Cache Miss (Dado não encontrado)
-        Redis-->>-API: Nulo
-        API->>+MySQL: SELECT * FROM livros WHERE id = ?
-        MySQL-->>-API: Dados do livro (banco)
-        API->>+Redis: Salvar "livro:{id}" no cache
-        Redis-->>-API: OK
-        API-->>-User: Resposta com dados do livro
-    end
+    API->>+Redis: Buscar "livro:{id}"
+    Redis-->>-API: Dados do livro (do cache)
+    API-->>-User: Resposta com dados
+
+    Note over User, API: Consulta de Dados (Cenário: Cache Miss)
+    User->>+API: GET /livros/{id} (com JWT)
+    API->>+Redis: Buscar "livro:{id}"
+    Redis-->>-API: Nulo (cache miss)
+    API->>+MySQL: SELECT * FROM livros
+    MySQL-->>-API: Dados do livro (do banco)
+    API->>+Redis: Salvar dados no cache
+    Redis-->>-API: OK
+    API-->>-User: Resposta com dados
 
     Note over User, API: Fluxo de Processamento Assíncrono
-    User->>+API: POST /uploads/processar (arquivo.xlsx)
-    API->>+RabbitMQ: Enfileirar job {caminho_arquivo}
+    User->>+API: POST /uploads/processar
+    API->>+RabbitMQ: Enfileirar job
     RabbitMQ-->>-API: Job recebido
-    API-->>-User: { "mensagem": "Seu arquivo está sendo processado." }
+    API-->>-User: { "mensagem": "Processando..." }
     
-    note right of RabbitMQ: O UploaderService consome a fila de forma independente.
-    RabbitMQ->>+UploaderService: Consumir job da fila
-    UploaderService->>UploaderService: Processar arquivo e salvar no banco
-    UploaderService-->>-RabbitMQ: ACK (Confirmação)
+    note right of RabbitMQ: UploaderService consome a fila
+    RabbitMQ->>+UploaderService: Consumir job
+    UploaderService->>UploaderService: Processar arquivo
+    UploaderService-->>RabbitMQ: ACK
 ```
 
 ## Pré-requisitos
