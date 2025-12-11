@@ -63,30 +63,6 @@ graph TD;
     H --"Define regras para"--> G;
 ```
 
-Abaixo, um diagrama que ilustra o fluxo de deploy e a interação entre os serviços no ambiente de produção:
-
-```mermaid
-graph TD;
-    subgraph "Ambiente de Desenvolvimento"
-        A[Código-fonte no GitHub]
-    end
-    
-    subgraph "CI/CD Pipeline (GitHub Actions)"
-        B{Commit na branch 'main'} --> C[1. Build & Test];
-        C --> D[2. Build da Imagem Docker];
-        D --> E[3. Push para o Docker Hub];
-    end
-
-    subgraph "Ambiente de Produção"
-        E -- "4. Deploy" --> F[API Backend (Java)];
-        F -- "Acessa" --> G[Banco de Dados MySQL];
-        F -- "Usa para cache" --> H[Cache Redis];
-        F -- "Enfileira jobs em" --> I[Message Broker RabbitMQ];
-    end
-
-    A --> B;
-```
-
 - **Domain**: Camada mais interna. Contém as entidades de negócio (`Livro`, `Aluno`) e as regras que não dependem de nenhuma tecnologia externa.
 - **Application**: Orquestra os fluxos de negócio (Casos de Uso) e define as interfaces (Ports) que a camada de infraestrutura deve implementar.
 - **Infrastructure**: Camada mais externa. Contém os detalhes de implementação, como os Controllers da API, a conexão com o banco de dados, o cache e o message broker.
