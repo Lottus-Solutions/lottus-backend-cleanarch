@@ -22,7 +22,7 @@ O código é disponibilizado publicamente **exclusivamente** para fins de **cons
 
 Exceto quando houver autorização expressa e por escrito dos responsáveis pela **Lottus Solutions**, **é proibido**:
 
-* Copiar, realizar forks, redistribuir, republicar ou disponibilizar o código, total ou parcialmente, em qualquer meio;
+* Redistribuir, republicar ou disponibilizar o código, total ou parcialmente, em qualquer meio;
 * Utilizá-lo em projetos próprios, acadêmicos, comerciais ou não comerciais;
 * Incorporar, modificar, adaptar ou criar obras derivadas com base em qualquer parte deste projeto;
 * Distribuir versões alteradas ou não alteradas do código;
